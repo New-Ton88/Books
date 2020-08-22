@@ -11,18 +11,54 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Books</a>
+                <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">
+                    @* I've had some issues with setting height and width in percent units *@
+                    <img src="~/img/Books.logo2.png" alt="Books logo" title="Books" width="100px" />
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <li class="nav-item ">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Bestsellers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Newest</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Coupon</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        @* classes explanation:
+                            dropdown -          is used to display list of items below button
+                            dropdown-toggle -   displays arrow that indicates that button is a list
+                            *@
+                        <li class="nav-item dropdown">
+                            <a class="text-dark nav-link dropdown-toggle" href="#" id="navbarDropDownContentsLink"
+                               role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Manage Contents
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropDownContentsLink">
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Books" asp-action="Index">Books</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Authors" asp-action="Index">Cover</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Publishers" asp-action="Index">Publishers</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Genre" asp-action="Index">Genre</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Manage Users</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Customer" asp-controller="Home" asp-action="Index">Orders</a>
                         </li>
                     </ul>
                 </div>
