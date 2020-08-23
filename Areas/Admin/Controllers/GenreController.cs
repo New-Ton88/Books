@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Books.Data;
+using Books.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,25 @@ namespace Books.Areas.Admin.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        //POST Create action
+        // -------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Genre genre)
+        {
+            if (ModelState.IsValid)
+            {
+                await _db.Genre.AddAsync(genre);
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(genre);
+            }
         }
     }
 }

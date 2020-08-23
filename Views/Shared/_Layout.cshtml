@@ -10,17 +10,13 @@
     @*<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" integrity="sha384-KA6wR/X5RY4zFAHpv/CnoG2UW1uogYfdnP67Uv7eULvTveboZJg0qUpmJZb5VqzN" crossorigin="anonymous">*@
 </head>
 <body>
-    <header>
+    <header class="position-fixed col-12 p-0">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">
                     @* I've had some issues with setting height and width in percent units *@
                     <img src="~/img/Books.logo2.png" alt="Books logo" title="Books" width="100px" />
                 </a>
-                @*<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>*@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item ">
@@ -42,7 +38,7 @@
                         @* classes explanation:
                             dropdown -          displays list of items below button
                             dropdown-toggle -   displays arrow that indicates that button is a list
-                            *@
+                        *@
                         <li class="nav-item dropdown">
                             <a class="text-dark nav-link dropdown-toggle" href="#" id="navbarDropDownContentsLink"
                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -67,6 +63,7 @@
             </div>
         </nav>
     </header>
+    <br /> <br /> <br /> <br />
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
