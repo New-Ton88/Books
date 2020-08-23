@@ -9,6 +9,7 @@ using Books.Models;
 
 namespace Books.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Books.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +18,18 @@ namespace Books.Areas.Admin.Controllers
             _db = db;
         }
 
-
-        // GET Index Action
-        // --------------------------
-        public  IActionResult Index()
+        // GET Index action
+        // -------------------------
+        public async Task<IActionResult> Index()
         {
-            // Return list of genres
-            // --------------------------
-            //return View(await _db.Genre.ToListAsync());
+
+            return View(await _db.Genre.ToListAsync());
+        }
+
+        // GET Create action
+        // -------------------------
+        public IActionResult Create()
+        {
             return View();
         }
     }
