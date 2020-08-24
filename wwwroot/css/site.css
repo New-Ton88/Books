@@ -69,3 +69,16 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+
+/* Positioning
+-------------------------------------------------- */
+
+.fixed-below-header{
+    position: fixed;
+    top: 500px;
+}
+
+.header-fixed{
+    z-index: 10000;
+}

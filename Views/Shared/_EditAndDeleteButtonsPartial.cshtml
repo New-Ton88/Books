@@ -1,0 +1,13 @@
+﻿@* Id value of selected element 
+   ----------------------------*@
+@model System.Int16
+
+
+<div class="btn-group" role="group">
+    <a class="btn btn-outline-dark" asp-action="Edit" asp-route-id="@Model">
+        <i class="fas fa-edit"></i>
+    </a>
+    <a class="btn btn-outline-dark" asp-action="Delete" asp-route-id="@Model">
+        <i class="fas fa-trash"></i>
+    </a>
+</div>

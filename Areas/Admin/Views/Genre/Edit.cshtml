@@ -1,26 +1,31 @@
 ﻿@model Genre
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3 class="text-dark">Create Genre</h3>
+<h3 class="text-dark">Edit Genre</h3>
 
 <hr />
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Edit">
     <div class="border-dark">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group row">
-            <label asp-for="Name" class="col-2"></label>
-            <input asp-for="Name" class="col-5" placeholder="Type Genre Name..."/>
+            <label class="col-2" asp-for="Name"></label>
+            <input class="col-5" asp-for="Name" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-5 offset-2 px-0">
-                <partial name="_CreateAndBackButtonsPartial" />
+                <partial name="_EditAndBackButtonsPartial" model="@Model.Id" />
             </div>
         </div>
     </div>
 </form>
 
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}

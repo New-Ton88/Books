@@ -1,0 +1,25 @@
+﻿@model Genre
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-dark">Delete Genre</h3>
+
+<hr />
+
+<form method="post" asp-action="Delete">
+    <div>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <label asp-for="Name" class="text-dark col-2"></label>
+            <input disabled asp-for="Name" class="col-5" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="offset-2 col-5 px-0">
+                <partial name="DeleteAndBackButtonsPartial" model="@Model.Id" />
+            </div>
+        </div>
+    </div>
+</form>
