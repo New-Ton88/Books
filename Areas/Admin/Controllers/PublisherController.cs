@@ -2,57 +2,57 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Books.Data;
 using Books.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Books.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class GenreController : Controller
+    public class PublisherController : Controller
     {
         private readonly ApplicationDbContext _db;
 
-        public GenreController(ApplicationDbContext db)
+        public PublisherController(ApplicationDbContext db)
         {
             _db = db;
         }
 
-        // GET Index action
+        // GET: Admin/Publisher
         // -------------------------
         public async Task<IActionResult> Index()
         {
-
-            return View(await _db.Genre.OrderBy(g =>g.Name).ToListAsync());
+            return View(await _db.Publisher.OrderBy(p => p.Name).ToListAsync());
         }
 
-        // GET Create action
+
+
+        // GET: Admin/Publisher/Create
         // -------------------------
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST Create action
+        // POST: Admin/Publisher/Create
         // -------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Genre genre)
+        public async Task<IActionResult> Create(Publisher publisher)
         {
             if (ModelState.IsValid)
             {
-                await _db.Genre.AddAsync(genre);
+                await _db.Publisher.AddAsync(publisher);
                 await _db.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-            
-            return View(genre);
-
+            return View(publisher);
         }
 
-        // GET Edit action
+        // GET: Admin/Publisher/Edit/5
         // -------------------------
         public async Task<IActionResult> Edit(short? id)
         {
@@ -63,48 +63,57 @@ namespace Books.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // If Id was properly sent then get Genre from Db
+            // If Id was properly sent then get Publisher from Db
             // -------------------------
-            var genre = await _db.Genre.FindAsync(id);
+            var publisher = await _db.Publisher.FindAsync(id);
 
-            // If genre with such Id wasn't found then show Not Found screen
+            // If Publisher with such Id wasn't found then show Not Found screen
             // -------------------------
-            if (genre == null)
+            if (publisher == null)
             {
                 return NotFound();
             }
 
             // If all commands passed then display proper View
             // -------------------------
-            return View(genre);
-
+            return View(publisher);
         }
 
-        // POST Edit
+        // POST: Admin/Publisher/Edit/5
         // -------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Genre genre)
+        public async Task<IActionResult> Edit(short id, [Bind("Id,Name")] Publisher publisher)
         {
-            // In this case I don't even have to send from View 
-            // any data (asp-route-id) it still knows that I am sending genre with form
-
-            // if data send is OK then update database
-            // -------------------------
-            if (ModelState.IsValid)
+            if (id != publisher.Id)
             {
-                _db.Update(genre);
-                await _db.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
 
-            // if Model is Invalid go back to Edit View
-            // -------------------------
-            return View(genre);
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _db.Update(publisher);
+                    await _db.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PublisherExists(publisher.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(publisher);
         }
 
-        // GET Delete
+        // GET: Admin/Publisher/Delete/5
         // -------------------------
         public async Task<IActionResult> Delete(short? id)
         {
@@ -115,23 +124,24 @@ namespace Books.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // If Id was properly sent then get Genre from Db
+            // If Id was properly sent then get Publisher from Db
             // -------------------------
-            var genre = await _db.Genre.FindAsync(id);
+            var publisher = await _db.Publisher
+                .FirstOrDefaultAsync(m => m.Id == id);
 
-            // If genre with such Id wasn't found then show Not Found screen
+            // If Publisher with such Id wasn't found then show Not Found screen
             // -------------------------
-            if (genre == null)
+            if (publisher == null)
             {
                 return NotFound();
             }
 
             // If all commands passed then display proper View
             // -------------------------
-            return View(genre);
+            return View(publisher);
         }
 
-        // POST Delete action
+        // POST: Admin/Publisher/Delete/5
         // -------------------------
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -146,22 +156,26 @@ namespace Books.Areas.Admin.Controllers
 
             // If Id was properly sent then get Genre from Db
             // -------------------------
-            var genre = await _db.Genre.FindAsync(id);
+            var publisher = await _db.Publisher.FindAsync(id);
 
             // If genre with such Id wasn't found then go back to View
             // -------------------------
-            if (genre == null)
+            if (publisher == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
             // If genre was found then remove it and save Db
             // -------------------------
-            _db.Genre.Remove(genre);
+            _db.Publisher.Remove(publisher);
             await _db.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
 
+        private bool PublisherExists(short id)
+        {
+            return _db.Publisher.Any(e => e.Id == id);
         }
     }
 }

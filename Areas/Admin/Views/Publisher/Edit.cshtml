@@ -1,0 +1,33 @@
+﻿@model Books.Models.Publisher
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-dark">Edit Publisher</h3>
+
+<hr />
+
+<form asp-action="Edit">
+    <div class="border-dark">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group row">
+            <label class="col-2" asp-for="Name"></label>
+            <input class="col-5" asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-5 offset-2 px-0">
+                <partial name="_EditAndBackButtonsPartial" model="@Model.Id" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+}
+

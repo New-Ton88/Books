@@ -24,5 +24,7 @@ namespace Books.Data
             : base(options) { }
         
         public DbSet<Genre> Genre { get; set; }
+        public DbSet<Publisher> Publisher { get; set; }
+        public DbSet<Cover> Cover { get; set; }
     }
 }
