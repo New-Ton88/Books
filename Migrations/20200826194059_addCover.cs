@@ -2,7 +2,7 @@
 
 namespace Books.Migrations
 {
-    public partial class AddCover : Migration
+    public partial class addCover : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,7 +10,8 @@ namespace Books.Migrations
                 name: "Cover",
                 columns: table => new
                 {
-                    Id = table.Column<byte>(nullable: false),
+                    Id = table.Column<short>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", nullable: false)
                 },
                 constraints: table =>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Books.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200825195146_AddCover")]
-    partial class AddCover
+    [Migration("20200826194059_addCover")]
+    partial class addCover
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,12 +23,14 @@ namespace Books.Migrations
 
             modelBuilder.Entity("Books.Models.Cover", b =>
                 {
-                    b.Property<byte>("Id")
-                        .HasColumnType("tinyint");
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarachar(30)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 

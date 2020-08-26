@@ -21,12 +21,14 @@ namespace Books.Migrations
 
             modelBuilder.Entity("Books.Models.Cover", b =>
                 {
-                    b.Property<byte>("Id")
-                        .HasColumnType("tinyint");
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarachar(30)");
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 

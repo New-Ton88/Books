@@ -12,7 +12,7 @@ namespace Books.Models
         // Set primary Key as TinyInt in database
         // -----------------------------
         [Key]
-        public byte Id { get; set; }
+        public Int16 Id { get; set; }
 
         // Set Name not nullable with length 30
         // -----------------------------

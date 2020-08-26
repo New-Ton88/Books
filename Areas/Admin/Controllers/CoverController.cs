@@ -42,7 +42,7 @@ namespace Books.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _db.Cover.AddAsync(cover);
+                _db.Cover.Add(cover);
                 await _db.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
@@ -51,7 +51,7 @@ namespace Books.Areas.Admin.Controllers
         }
 
         // GET: Admin/Cover/Edit/5
-        public async Task<IActionResult> Edit(byte? id)
+        public async Task<IActionResult> Edit(short? id)
         {
             if (id == null)
             {
@@ -71,7 +71,7 @@ namespace Books.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(byte id, [Bind("Id,Name")] Cover cover)
+        public async Task<IActionResult> Edit(short id, [Bind("Id,Name")] Cover cover)
         {
             if (id != cover.Id)
             {
@@ -102,7 +102,7 @@ namespace Books.Areas.Admin.Controllers
         }
 
         // GET: Admin/Cover/Delete/5
-        public async Task<IActionResult> Delete(byte? id)
+        public async Task<IActionResult> Delete(short? id)
         {
             if (id == null)
             {
@@ -122,7 +122,7 @@ namespace Books.Areas.Admin.Controllers
         // POST: Admin/Cover/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(byte id)
+        public async Task<IActionResult> DeleteConfirmed(short id)
         {
             var cover = await _db.Cover.FindAsync(id);
             _db.Cover.Remove(cover);
@@ -130,7 +130,7 @@ namespace Books.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CoverExists(byte id)
+        private bool CoverExists(short id)
         {
             return _db.Cover.Any(e => e.Id == id);
         }

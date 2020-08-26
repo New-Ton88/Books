@@ -20,10 +20,10 @@
         @foreach (var item in Model)
         {
             <div class="row py-1 border-bottom">
-                <div class="col-8 text-left">
+                <div class="col-8 text-left px-0">
                     @item.Name
                 </div>
-                <div class="col-4 text-right">
+                <div class="col-4 text-right px-0">
                     <partial name="_EditAndDeleteButtonsPartial" model="item.Id" />
                 </div>
             </div>
