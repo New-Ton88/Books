@@ -19,5 +19,14 @@ namespace Books.Models
         [Required]
         [Column(TypeName ="nvarchar(30)")]
         public string Name { get; set; }
+
+        // Foreign Key to Category
+        // ----------------------------------
+        //[Required]
+        [Display(Name ="Category")]
+        public short CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public virtual Category Category { get; set; }
     }
 }

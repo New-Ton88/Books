@@ -14,11 +14,10 @@
         <div class="form-group row">
             <label asp-for="Name" class="text-dark col-2"></label>
             <input disabled asp-for="Name" class="col-5" />
-            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="offset-2 col-5 px-0">
-                <partial name="DeleteAndBackButtonsPartial" model="@Model.Id" />
+                <partial name="_DeleteAndBackButtonsPartial" model="@Model.Id" />
             </div>
         </div>
     </div>

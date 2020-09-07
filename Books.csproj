@@ -7,6 +7,14 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200826191958_addCover.cs" />
     <Compile Remove="Migrations\20200826191958_addCover.Designer.cs" />
+    <Compile Remove="Migrations\20200907212133_genreCategoryUpdate.cs" />
+    <Compile Remove="Migrations\20200907212133_genreCategoryUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20200907212923_updateGenreWithCategory.cs" />
+    <Compile Remove="Migrations\20200907212923_updateGenreWithCategory.Designer.cs" />
+    <Compile Remove="Migrations\20200907213700_updateGenreWithCategoryIdFK.cs" />
+    <Compile Remove="Migrations\20200907213700_updateGenreWithCategoryIdFK.Designer.cs" />
+    <Compile Remove="Migrations\20200907214602_updateGenreWithCategoryIdFK.cs" />
+    <Compile Remove="Migrations\20200907214602_updateGenreWithCategoryIdFK.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -113,7 +113,7 @@ namespace Books.Areas.Admin.Controllers
             return View(publisher);
         }
 
-        // GET: Admin/Publisher/Delete/5
+        // GET: Admin/Publisher/Delete
         // -------------------------
         public async Task<IActionResult> Delete(short? id)
         {

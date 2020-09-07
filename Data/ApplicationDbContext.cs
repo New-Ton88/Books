@@ -26,5 +26,6 @@ namespace Books.Data
         public DbSet<Genre> Genre { get; set; }
         public DbSet<Publisher> Publisher { get; set; }
         public DbSet<Cover> Cover { get; set; }
+        public DbSet<Category> Category { get; set; }
     }
 }
