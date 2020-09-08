@@ -14,7 +14,7 @@ namespace Books.Models
         [Key]
         public Int16 Id { get; set; }
 
-        // Set field as not Nullable and max length to 30
+        // Set field as not nullable and max length to 30
         // ----------------------------------
         [Required]
         [Column(TypeName ="nvarchar(30)")]
