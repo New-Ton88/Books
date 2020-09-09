@@ -22,7 +22,7 @@ namespace Books.Models
 
         // Foreign Key to Category
         // ----------------------------------
-        //[Required]
+        [Required]
         [Display(Name ="Category")]
         public short CategoryId { get; set; }
 

@@ -25,10 +25,10 @@
             <div class="col-8 text-left px-0">
                 @item.Name
             </div>
-        </div>
-        <div class="col-4 text-right px-0">
-            <partial name="_EditAndRemoveButtonsPartial" model="item.Id"/>
-        </div>
+            <div class="col-4 text-right px-0">
+                <partial name="_EditAndDeleteButtonsPartial" model="item.Id" />
+            </div>
+        </div> 
         }
     </div>
 }

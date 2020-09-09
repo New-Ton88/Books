@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20200907213700_updateGenreWithCategoryIdFK.Designer.cs" />
     <Compile Remove="Migrations\20200907214602_updateGenreWithCategoryIdFK.cs" />
     <Compile Remove="Migrations\20200907214602_updateGenreWithCategoryIdFK.Designer.cs" />
+    <Compile Remove="Migrations\20200909220607_setGenreCategoryIdRequired.cs" />
+    <Compile Remove="Migrations\20200909220607_setGenreCategoryIdRequired.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

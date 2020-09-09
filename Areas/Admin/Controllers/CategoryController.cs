@@ -62,6 +62,7 @@ namespace Books.Areas.Admin.Controllers
         }
 
         // GET: Admin/Category/Edit
+        // -------------------------
         public async Task<IActionResult> Edit(short? id)
         {
 
@@ -89,6 +90,7 @@ namespace Books.Areas.Admin.Controllers
         }
 
         // POST: Admin/Category/Edit
+        // -------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(short id, [Bind("Id,Name")] Category category)
