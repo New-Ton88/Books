@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Books.Data;
 using Books.Models;
+using Books.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,14 +25,24 @@ namespace Books.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
 
-            return View(await _db.Genre.OrderBy(g =>g.Name).ToListAsync());
+            return View(await _db.Genre.Include(g => g.Category).OrderBy(g =>g.Name).ToListAsync());
         }
 
         // GET Create action
         // -------------------------
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            // Create new model in order to display also category for
+            // which new Genre will be created
+            // -------------------------
+            CategoryAndGenreViewModel model = new CategoryAndGenreViewModel()
+            {
+                Categories = await _db.Category.ToListAsync(),
+                Genre = new Genre(),
+                GenresList = await _db.Genre.OrderBy(g => g.Name).Select(g => g.Name).Distinct().ToListAsync()
+            };
+
+            return View(model);
         }
 
         // POST Create action
