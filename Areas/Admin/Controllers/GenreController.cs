@@ -6,6 +6,8 @@ using Books.Data;
 using Books.Models;
 using Books.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Areas.Admin.Controllers
@@ -14,6 +16,9 @@ namespace Books.Areas.Admin.Controllers
     public class GenreController : Controller
     {
         private readonly ApplicationDbContext _db;
+
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public GenreController(ApplicationDbContext db)
         {
@@ -49,17 +54,36 @@ namespace Books.Areas.Admin.Controllers
         // -------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Genre genre)
+        public async Task<IActionResult> Create(CategoryAndGenreViewModel model)
         {
             if (ModelState.IsValid)
             {
-                await _db.Genre.AddAsync(genre);
-                await _db.SaveChangesAsync();
-
-                return RedirectToAction(nameof(Index));
+                var genres = _db.Genre.Include(g => g.Category)
+                                            .Where(g => g.Name == model.Genre.Name && g.CategoryId == model.Genre.CategoryId);
+                
+                if (genres.Count() > 0)
+                {
+                    StatusMessage = "Error: Genre exists under " + genres.First().Name 
+                                                                       + " category. Please change name.";
+                }
+                else
+                {
+                    await _db.Genre.AddAsync(model.Genre);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+   
             }
-            
-            return View(genre);
+
+            CategoryAndGenreViewModel modelVM = new CategoryAndGenreViewModel()
+            {
+                Categories = await _db.Category.ToListAsync(),
+                Genre = model.Genre,
+                GenresList = await _db.Genre.OrderBy(g => g.Name).Select(g => g.Name).ToListAsync(),
+                StatusMessage = StatusMessage
+            };
+
+            return View(modelVM);
 
         }
 
@@ -173,6 +197,26 @@ namespace Books.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Index));
 
+        }
+
+        // GET Genres action
+        // -------------------------
+        [ActionName("GenreGet")]
+        public async Task<IActionResult> GenreGet(short id)
+        {
+            // Create genres object
+            // -------------------------
+            List<Genre> genres = new List<Genre>();
+
+            // get genres from database with requested category id
+            // -------------------------
+            genres = await (from genre in _db.Genre
+                            where genre.CategoryId == id
+                            select genre).ToListAsync();
+
+            // return genres as json format
+            // -------------------------
+            return Json(new SelectList(genres, "Id", "Name"));
         }
     }
 }
