@@ -63,7 +63,7 @@ namespace Books.Areas.Admin.Controllers
                 
                 if (genres.Count() > 0)
                 {
-                    StatusMessage = "Error: Genre exists under " + genres.First().Name 
+                    StatusMessage = "Error: Genre " + genres.First().Name + " exists under " + genres.First().Category.Name
                                                                        + " category. Please change name.";
                 }
                 else
@@ -109,9 +109,23 @@ namespace Books.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // If all commands passed then display proper View
+            // If all commands passed then create ViewModel object to send it
+            // to the View
             // -------------------------
-            return View(genre);
+            var model = new CategoryAndGenreViewModel()
+            {
+                Categories = await _db.Category.OrderBy(c => c.Name).ToListAsync(),
+                Genre = genre,
+                GenresList = await _db.Genre
+                                        .OrderBy(g => g.Name)
+                                        .Select(g => g.Name)
+                                        .Distinct()
+                                        .ToListAsync()
+            };
+
+            // return ViewModel to View
+            // -------------------------
+            return View(model);
 
         }
 
@@ -119,7 +133,7 @@ namespace Books.Areas.Admin.Controllers
         // -------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Genre genre)
+        public async Task<IActionResult> Edit(CategoryAndGenreViewModel model, short id)
         {
             // In this case I don't even have to send from View 
             // any data (asp-route-id) it still knows that I am sending genre with form
@@ -128,15 +142,56 @@ namespace Books.Areas.Admin.Controllers
             // -------------------------
             if (ModelState.IsValid)
             {
-                _db.Update(genre);
-                await _db.SaveChangesAsync();
+                // Verify if genre isn't created already
+                // -------------------------
+                var genres = await _db.Genre.Include(g => g.Category)
+                                            .Where(g => g.Name == model.Genre.Name && g.CategoryId == model.Genre.CategoryId).ToListAsync();
 
-                return RedirectToAction(nameof(Index));
+                // If genre already exist display message
+                // -------------------------
+                if (genres.Count() > 0)
+                {
+                    StatusMessage = "Error: Genre " + genres.First().Name + " exists under " + genres.First().Category.Name
+                                                                       + " category. Please change name.";
+                }
+                // If genre isn't exist then update it
+                // -------------------------
+                else
+                {
+                    // When I use: 
+                    // _db.Update(model.Genre);
+                    // New element is added to db
+                    // Use expression below to update
+                    // -------------------------
+                    var genreFromDb = await _db.Genre.FindAsync(id);
+                    genreFromDb.Name = model.Genre.Name;
+
+                    await _db.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                
             }
+
+            // Create new View model
+            // -------------------------
+            var modelVM = new CategoryAndGenreViewModel()
+            {
+                Categories = await _db.Category.ToListAsync(),
+                Genre = model.Genre,
+                GenresList = await _db.Genre.OrderBy(g => g.Name).Select(g => g.Name).ToListAsync(),
+                StatusMessage = StatusMessage
+            };
+
+            // This is added because in case of trying to pass Subcategory name
+            // that already exits id is lost and next update will fail
+            // because of bad id
+            // -------------------------
+            model.Genre.Id = id;
 
             // if Model is Invalid go back to Edit View
             // -------------------------
-            return View(genre);
+            return View(modelVM);
         }
 
         // GET Delete
