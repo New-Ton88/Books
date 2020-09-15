@@ -17,6 +17,24 @@
     <Compile Remove="Migrations\20200907214602_updateGenreWithCategoryIdFK.Designer.cs" />
     <Compile Remove="Migrations\20200909220607_setGenreCategoryIdRequired.cs" />
     <Compile Remove="Migrations\20200909220607_setGenreCategoryIdRequired.Designer.cs" />
+    <Compile Remove="Migrations\20200915214047_addLanguageAndAuthor.cs" />
+    <Compile Remove="Migrations\20200915214047_addLanguageAndAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200915214149_addLanguage.cs" />
+    <Compile Remove="Migrations\20200915214149_addLanguage.Designer.cs" />
+    <Compile Remove="Migrations\20200915214235_addLanguage.cs" />
+    <Compile Remove="Migrations\20200915214235_addLanguage.Designer.cs" />
+    <Compile Remove="Migrations\20200915214553_addLanguageAndAuthor.cs" />
+    <Compile Remove="Migrations\20200915214553_addLanguageAndAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200915214942_addAuthor.cs" />
+    <Compile Remove="Migrations\20200915214942_addAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200915215614_addAuthor.cs" />
+    <Compile Remove="Migrations\20200915215614_addAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200915215810_addAuthor.cs" />
+    <Compile Remove="Migrations\20200915215810_addAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200915215903_addAuthor.cs" />
+    <Compile Remove="Migrations\20200915215903_addAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200915215935_addAuthor.cs" />
+    <Compile Remove="Migrations\20200915215935_addAuthor.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

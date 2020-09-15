@@ -30,7 +30,10 @@ namespace Books.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
 
-            return View(await _db.Genre.Include(g => g.Category).OrderBy(g =>g.Name).ToListAsync());
+            return View(await _db.Genre.Include(g => g.Category)
+                                        .OrderBy(g => g.Category)
+                                        .ThenBy(g =>g.Name)
+                                        .ToListAsync());
         }
 
         // GET Create action
@@ -216,9 +219,16 @@ namespace Books.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            var model = new CategoryAndGenreViewModel()
+            {
+                Categories = await _db.Category.OrderBy(c => c.Name).ToListAsync(),
+                Genre = genre,
+                GenresList = await _db.Genre.Select(g => g.Name).Distinct().ToListAsync()
+            };
+
             // If all commands passed then display proper View
             // -------------------------
-            return View(genre);
+            return View(model);
         }
 
         // POST Delete action

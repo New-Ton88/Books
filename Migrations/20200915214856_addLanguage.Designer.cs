@@ -4,88 +4,22 @@ using Books.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Books.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200915214856_addLanguage")]
+    partial class addLanguage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Books.Models.Author", b =>
-                {
-                    b.Property<short>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Alias")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Birthday")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<short?>("GenreId01")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("GenreId02")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("GenreId03")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("GenreId04")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("GenreId05")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("GenreId06")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("GenreId07")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<short>("LanguageId")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GenreId01");
-
-                    b.HasIndex("GenreId02");
-
-                    b.HasIndex("GenreId03");
-
-                    b.HasIndex("GenreId04");
-
-                    b.HasIndex("GenreId05");
-
-                    b.HasIndex("GenreId06");
-
-                    b.HasIndex("GenreId07");
-
-                    b.HasIndex("LanguageId");
-
-                    b.ToTable("Author");
-                });
 
             modelBuilder.Entity("Books.Models.Category", b =>
                 {
@@ -366,43 +300,6 @@ namespace Books.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Books.Models.Author", b =>
-                {
-                    b.HasOne("Books.Models.Genre", "Genre01")
-                        .WithMany()
-                        .HasForeignKey("GenreId01");
-
-                    b.HasOne("Books.Models.Genre", "Genre02")
-                        .WithMany()
-                        .HasForeignKey("GenreId02");
-
-                    b.HasOne("Books.Models.Genre", "Genre03")
-                        .WithMany()
-                        .HasForeignKey("GenreId03");
-
-                    b.HasOne("Books.Models.Genre", "Genre04")
-                        .WithMany()
-                        .HasForeignKey("GenreId04");
-
-                    b.HasOne("Books.Models.Genre", "Genre05")
-                        .WithMany()
-                        .HasForeignKey("GenreId05");
-
-                    b.HasOne("Books.Models.Genre", "Genre06")
-                        .WithMany()
-                        .HasForeignKey("GenreId06");
-
-                    b.HasOne("Books.Models.Genre", "Genre07")
-                        .WithMany()
-                        .HasForeignKey("GenreId07");
-
-                    b.HasOne("Books.Models.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Books.Models.Genre", b =>
