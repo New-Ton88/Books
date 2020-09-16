@@ -1,0 +1,25 @@
+﻿@model Language
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3 class="text-dark">Delete Language</h3>
+
+<hr />
+
+<form method="post" asp-action="Delete">
+    <div class="text-dark">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="row form-group">
+            <label class="col-2" asp-for="Name"></label>
+            <input class="col-5" disabled asp-for="Name" />
+        </div>
+        <div class="row">
+            <div class="offset-2 col-5 px-0">
+                <partial name="_DeleteAndBackButtonsPartial" model="@Model.Id" />
+            </div>
+        </div>
+    </div>
+</form>

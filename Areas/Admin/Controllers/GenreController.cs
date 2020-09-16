@@ -47,7 +47,11 @@ namespace Books.Areas.Admin.Controllers
             {
                 Categories = await _db.Category.ToListAsync(),
                 Genre = new Genre(),
-                GenresList = await _db.Genre.OrderBy(g => g.Name).Select(g => g.Name).Distinct().ToListAsync()
+                GenresList = await _db.Genre.OrderBy(g => g.Category)
+                                            .ThenBy(g => g.Name)
+                                            .Select(g => g.Name)
+                                            .Distinct()
+                                            .ToListAsync()
             };
 
             return View(model);
@@ -82,7 +86,11 @@ namespace Books.Areas.Admin.Controllers
             {
                 Categories = await _db.Category.ToListAsync(),
                 Genre = model.Genre,
-                GenresList = await _db.Genre.OrderBy(g => g.Name).Select(g => g.Name).ToListAsync(),
+                GenresList = await _db.Genre.OrderBy(g => g.Category)
+                                        .ThenBy(g => g.Name)
+                                        .Select(g => g.Name)
+                                        .Distinct()
+                                        .ToListAsync(),
                 StatusMessage = StatusMessage
             };
 

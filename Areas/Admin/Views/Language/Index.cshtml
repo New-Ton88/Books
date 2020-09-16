@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Language>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-dark row">
+    <h3 class="col-6 text-left">Languages List</h3>
+    <div class="col-6 text-right">
+        <partial name="_CreateButtonPartial" />
+    </div>
+</div>
+
+
+<hr />
+
+@if (Model.Count() > 0)
+{
+    <div class="offset-3 col-6 text-dark">
+        @foreach (var item in Model)
+        {
+            <div class="border-bottom row py-1">
+                <div class="col-8 text-left px-0">
+                    @item.Name
+                </div>
+                <div class="col-4 text-right px-0">
+                    <partial name="_EditAndDeleteButtonsPartial" model="@item.Id">
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="text-dark col-3 px-0">
+        No Languages found
+    </div>
+}
+
+
+
+
