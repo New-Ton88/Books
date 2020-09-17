@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Books.Data;
 using Books.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Books.Areas.Admin.Controllers
 {
@@ -19,6 +20,10 @@ namespace Books.Areas.Admin.Controllers
         {
             _db = db;
         }
+
+        [TempData]
+        public string StatusMessage { get; set; }
+
 
         // GET: Admin/Author
         public async Task<IActionResult> Index()

@@ -34,6 +34,8 @@ namespace Books.Areas.Admin.Controllers
                                         .OrderBy(g => g.Category)
                                         .ThenBy(g =>g.Name)
                                         .ToListAsync());
+
+            
         }
 
         // GET Create action
@@ -75,8 +77,14 @@ namespace Books.Areas.Admin.Controllers
                 }
                 else
                 {
+
+                    StatusMessage = "Genre " + model.Genre.Name + " succesfully created";
+
                     await _db.Genre.AddAsync(model.Genre);
                     await _db.SaveChangesAsync();
+
+                    
+
                     return RedirectToAction(nameof(Index));
                 }
    
@@ -169,6 +177,7 @@ namespace Books.Areas.Admin.Controllers
                 // -------------------------
                 else
                 {
+
                     // When I use: 
                     // _db.Update(model.Genre);
                     // New element is added to db
@@ -178,6 +187,9 @@ namespace Books.Areas.Admin.Controllers
                     genreFromDb.Name = model.Genre.Name;
 
                     await _db.SaveChangesAsync();
+
+                    StatusMessage = "Genre " + model.Genre.Name + " succesfully modified";
+
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -267,6 +279,8 @@ namespace Books.Areas.Admin.Controllers
             // -------------------------
             _db.Genre.Remove(genre);
             await _db.SaveChangesAsync();
+
+            StatusMessage = "Genre " + genre.Name + " succesfully removed";
 
             return RedirectToAction(nameof(Index));
 
