@@ -1,85 +1,83 @@
-﻿@model Books.Models.Author
-
+﻿@model Books.Models.ViewModels.AuthorViewModel
+@using Books.Extensions
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h3>Create Author</h3>
 
-<h4>Author</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Alias" class="control-label"></label>
-                <input asp-for="Alias" class="form-control" />
-                <span asp-validation-for="Alias" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Birthday" class="control-label"></label>
-                <input asp-for="Birthday" class="form-control" />
-                <span asp-validation-for="Birthday" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LanguageId" class="control-label"></label>
-                <select asp-for="LanguageId" class ="form-control" asp-items="ViewBag.LanguageId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId01" class="control-label"></label>
-                <select asp-for="GenreId01" class ="form-control" asp-items="ViewBag.GenreId01"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId02" class="control-label"></label>
-                <select asp-for="GenreId02" class ="form-control" asp-items="ViewBag.GenreId02"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId03" class="control-label"></label>
-                <select asp-for="GenreId03" class ="form-control" asp-items="ViewBag.GenreId03"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId04" class="control-label"></label>
-                <select asp-for="GenreId04" class ="form-control" asp-items="ViewBag.GenreId04"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId05" class="control-label"></label>
-                <select asp-for="GenreId05" class ="form-control" asp-items="ViewBag.GenreId05"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId06" class="control-label"></label>
-                <select asp-for="GenreId06" class ="form-control" asp-items="ViewBag.GenreId06"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GenreId07" class="control-label"></label>
-                <select asp-for="GenreId07" class ="form-control" asp-items="ViewBag.GenreId07"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<partial name="_StatusMessagePartial" model="@TempData["StatusMessage"]" />
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="text-dark">
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.Name"></label>
+            <input class="col-5" asp-for="@Model.Author.Name" type="text" placeholder="Type author name..." />
+            <span asp-validation-for="@Model.Author.Name" class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.Alias"></label>
+            <input class="col-5" asp-for="@Model.Author.Alias" type="text" placeholder="Type author alias..." />
+            <span asp-validation-for="@Model.Author.Alias" class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.Description"></label>
+            <input class="col-5" asp-for="@Model.Author.Description" type="text" placeholder="Type author description..." />
+            <span asp-validation-for="@Model.Author.Description" class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.LanguageId"></label>
+            <select class="col-5" asp-for="@Model.Author.LanguageId" asp-items="Model.Languages.ToSelectListItem(Model.Author.LanguageId)">
+            </select>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.GenreId01"></label>
+            <select class="col-5" asp-for="@Model.Author.GenreId01"
+                    asp-items="Model.Genres.ToSelectListItemPlusEmpty(Model.Author.GenreId01)">
+            </select>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.GenreId02"></label>
+            <select class="col-5" asp-for="@Model.Author.GenreId02"
+                    asp-items="Model.Genres.ToSelectListItemPlusEmpty(Model.Author.GenreId02)">
+            </select>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.GenreId03"></label>
+            <select class="col-5" asp-for="@Model.Author.GenreId03"
+                    asp-items="Model.Genres.ToSelectListItemPlusEmpty(Model.Author.GenreId03)">
+            </select>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.GenreId04"></label>
+            <select class="col-5" asp-for="@Model.Author.GenreId04"
+                    asp-items="Model.Genres.ToSelectListItemPlusEmpty(Model.Author.GenreId04)">
+            </select>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.GenreId05"></label>
+            <select class="col-5" asp-for="@Model.Author.GenreId05"
+                    asp-items="Model.Genres.ToSelectListItemPlusEmpty(Model.Author.GenreId05)">
+            </select>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.GenreId06"></label>
+            <select class="col-5" asp-for="@Model.Author.GenreId06"
+                    asp-items="Model.Genres.ToSelectListItemPlusEmpty(Model.Author.GenreId06)">
+            </select>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Author.GenreId07"></label>
+            <select class="col-5" asp-for="@Model.Author.GenreId07"
+                    asp-items="Model.Genres.ToSelectListItemPlusEmpty(Model.Author.GenreId07)">
+            </select>
+        </div>
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

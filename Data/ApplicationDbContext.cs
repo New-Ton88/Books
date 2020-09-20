@@ -18,6 +18,7 @@ namespace Books.Data
         5. Create migration (use command in PowerShell add-migration nameOfMigration).
         6. Create Database (use command in PowerShell update-database).
     */
+
     public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
