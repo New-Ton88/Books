@@ -84,16 +84,15 @@ namespace Books.Areas.Admin.Controllers
 
                 // Check if author name or alias entered already exists
                 // ------------------------------
-                var author = await _db.Author.Where(a => a.Name == AuthorVM.Author.Name || 
-                                                         a.Alias == AuthorVM.Author.Alias)
-                                                          .FirstAsync();
+                var authors = _db.Author.Where(a => a.Name == AuthorVM.Author.Name || a.Alias == AuthorVM.Author.Alias);
 
                 // If author already exists inform user
                 // ------------------------------
-                if (author != null)
+                if (authors.Count() > 0)
                 {
                     // Verify if user name already exists
                     // ------------------------------
+                    var author = authors.First();
                     var authorNameExists = author.Name == AuthorVM.Author.Name;
                     if (authorNameExists)
                     {

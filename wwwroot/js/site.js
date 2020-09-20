@@ -80,3 +80,21 @@ $(function () {
 $("#ddlCategories").on("change", function () {
     updateGenresList();
 });
+
+// ============ ADMIN/AUTHOR ============
+
+function dateUpdate() {
+    // Function updates dateInput with value dateCalendar
+    // ------------------
+    var $dateCalendar = $("#dateCalendar").val();
+    console.log($dateCalendar)
+    $("#dateInput").val($dateCalendar);
+}
+
+
+// Update value of dateInput when date calendar
+// value changes
+// ------------------
+$("#dateCalendar").on("change", function () {
+    dateUpdate();
+})

@@ -9,11 +9,15 @@ namespace Books.Extensions
 {
     public static class IEnumerableExtension
     {
-        // This extension is used to set all attributes of selected item in dropdown menu 
 
         public static IEnumerable<SelectListItem> ToSelectListItem<T>(this IEnumerable<T> items, short selectedValue)
         {
-            
+            /*
+                Method is extension method for IEnumerable<T>. This extension is used to set all elements 
+                of T class in dropdown menu.
+             
+            */
+
             return from item in items
                    select new SelectListItem
                    {
@@ -25,6 +29,12 @@ namespace Books.Extensions
 
         public static IEnumerable<SelectListItem> ToSelectListItemPlusEmpty<T>(this IEnumerable<T> items, short? selectedValue)
         {
+            /*
+                Method is extension method for IEnumerable<T>. This extension is used to set all elements 
+                of T class in dropdown menu plus empty element at the begining.
+             
+            */
+
             var emptyItem = new SelectListItem
             {
                 Text = "",
