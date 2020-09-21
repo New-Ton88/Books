@@ -14,6 +14,7 @@ using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using Books.StaticDetails;
 using System.Net;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Books.Areas.Admin.Controllers
 {
@@ -199,61 +200,104 @@ namespace Books.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["GenreId01"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId01);
-            ViewData["GenreId02"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId02);
-            ViewData["GenreId03"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId03);
-            ViewData["GenreId04"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId04);
-            ViewData["GenreId05"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId05);
-            ViewData["GenreId06"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId06);
-            ViewData["GenreId07"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId07);
-            ViewData["LanguageId"] = new SelectList(_db.Language, "Id", "Name", author.LanguageId);
-            return View(author);
+
+            AuthorVM.Author = author;
+
+            return View(AuthorVM);
         }
 
-        // POST: Admin/Author/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Admin/Author/Edit/id
+        // ------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(short id, [Bind("Id,Name,Alias,Birthday,LanguageId,Description,Image,GenreId01,GenreId02,GenreId03,GenreId04,GenreId05,GenreId06,GenreId07")] Author author)
+        public async Task<IActionResult> Edit(short? id, Author author)
         {
-            if (id != author.Id)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
-                try
+                if (id == null)
                 {
-                    _db.Update(author);
-                    await _db.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                var authorFromDb = await _db.Author.FindAsync(id);
+
+                if (authorFromDb == null)
                 {
-                    if (!AuthorExists(author.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
+
+                // Update img in images/Authors folder
+                // ------------------------------
+                var files = HttpContext.Request.Form.Files;
+                
+
+                // Check if image was uploaded
+                // ------------------------------
+                if (files.Count() > 0)
+                {
+                    var webRootPath = _webHostEnvironment.WebRootPath;
+                    var uploads = Path.Combine(webRootPath + SD.AuthorsImgPath);
+                    var extension = Path.GetExtension(files[0].FileName);
+
+                    try {
+                        var imagePath = authorFromDb.Image.TrimStart('\\');
+
+                        // Delete old image
+                        // ------------------------------
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+                    catch
+                    {
+
+                    };
+
+                    // add new image
+                    // ------------------------------
+                    using (var filestream = new FileStream(Path.Combine(uploads, id + extension), FileMode.Create))
+                    {
+                        files[0].CopyTo(filestream);
+                    }
+
+                    authorFromDb.Image = SD.AuthorsImgPath + id + extension;
+                }
+
+
+                authorFromDb.Name = AuthorVM.Author.Name;
+                authorFromDb.Alias = AuthorVM.Author.Alias;
+                authorFromDb.Birthday = AuthorVM.Author.Birthday;
+                authorFromDb.Description = AuthorVM.Author.Description;
+                authorFromDb.Genre01 = AuthorVM.Author.Genre01;
+                authorFromDb.Genre02 = AuthorVM.Author.Genre02;
+                authorFromDb.Genre03 = AuthorVM.Author.Genre03;
+                authorFromDb.Genre04 = AuthorVM.Author.Genre04;
+                authorFromDb.Genre05 = AuthorVM.Author.Genre05;
+                authorFromDb.Genre06 = AuthorVM.Author.Genre06;
+                authorFromDb.Genre07 = AuthorVM.Author.Genre07;
+                authorFromDb.GenreId01 = AuthorVM.Author.GenreId01;
+                authorFromDb.GenreId02 = AuthorVM.Author.GenreId02;
+                authorFromDb.GenreId03 = AuthorVM.Author.GenreId03;
+                authorFromDb.GenreId04 = AuthorVM.Author.GenreId04;
+                authorFromDb.GenreId05 = AuthorVM.Author.GenreId05;
+                authorFromDb.GenreId06 = AuthorVM.Author.GenreId06;
+                authorFromDb.GenreId07 = AuthorVM.Author.GenreId07;
+                authorFromDb.Language = AuthorVM.Author.Language;
+                authorFromDb.LanguageId = AuthorVM.Author.LanguageId;
+
+                await _db.SaveChangesAsync();
+
+                StatusMessage = author.Name + " succesfully updated.";
+
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GenreId01"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId01);
-            ViewData["GenreId02"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId02);
-            ViewData["GenreId03"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId03);
-            ViewData["GenreId04"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId04);
-            ViewData["GenreId05"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId05);
-            ViewData["GenreId06"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId06);
-            ViewData["GenreId07"] = new SelectList(_db.Genre, "Id", "Name", author.GenreId07);
-            ViewData["LanguageId"] = new SelectList(_db.Language, "Id", "Name", author.LanguageId);
-            return View(author);
+            return View(AuthorVM);
         }
 
-        // GET: Admin/Author/Delete/5
+        // GET: Admin/Author/Delete/id
+        // ------------------------------
         public async Task<IActionResult> Delete(short? id)
         {
             if (id == null)
@@ -293,11 +337,15 @@ namespace Books.Areas.Admin.Controllers
         // GET: Admin/Author/Details
         public async Task<IActionResult> Details(short? id)
         {
+            // Validate author id
+            // ------------------------------
             if (id == null)
             {
                 return NotFound();
             }
 
+            // Get author from db for id
+            // ------------------------------
             var author = await _db.Author
                 .Include(a => a.Genre01)
                 .Include(a => a.Genre02)
@@ -308,12 +356,16 @@ namespace Books.Areas.Admin.Controllers
                 .Include(a => a.Genre07)
                 .Include(a => a.Language)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            // Verify if author with 
             if (author == null)
             {
                 return NotFound();
             }
 
-            return View(author);
+            AuthorVM.Author = author;
+
+            return View(AuthorVM);
         }
 
         private bool AuthorExists(short id)

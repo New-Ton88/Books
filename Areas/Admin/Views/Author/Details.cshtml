@@ -1,97 +1,117 @@
-﻿@model Books.Models.Author
+﻿@model Books.Models.ViewModels.AuthorViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h3>Author Details</h3>
 
 <div>
-    <h4>Author</h4>
     <hr />
+    <div class="py-1">
+        <img src="@Model.Author.Image" alt="@Model.Author.Name" height="150"/>
+    </div>
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Author.Name)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Alias)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Author.Alias)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Alias)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author.Alias)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Birthday)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Author.Birthday)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Birthday)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author.Birthday)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Language)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Author.Language)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Language.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author.Language.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Author.Description)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Author.Description)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Image)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre01)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre01.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre02)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre02.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre03)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre03.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre04)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre04.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre05)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre05.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre06)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre06.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Genre07)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Genre07.Name)
-        </dd>
+        @if (Model.Author.Genre01 != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Author.Genre01)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.Genre01.Name)
+            </dd>
+        }
+        @if (Model.Author.Genre02 != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Author.Genre02)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.Genre02.Name)
+            </dd>
+        }
+        @if (Model.Author.Genre03 != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Author.Genre03)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.Genre03.Name)
+            </dd>
+        }
+        @if (Model.Author.Genre04 != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Author.Genre04)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.Genre04.Name)
+            </dd>
+        }
+        @if (Model.Author.Genre05 != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Author.Genre05)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.Genre05.Name)
+            </dd>
+        }
+        @if (Model.Author.Genre06 != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Author.Genre06)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.Genre06.Name)
+            </dd>
+        }
+        @if (Model.Author.Genre07 != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Author.Genre07)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Author.Genre07.Name)
+            </dd>
+        }
     </dl>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <partial name="_EditDeleteBackButtonsPartial" model="@Model.Author.Id" />
+        </div>
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>

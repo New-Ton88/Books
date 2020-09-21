@@ -1,0 +1,13 @@
+﻿@model short
+
+<div class="row">
+    <div class="col-3">
+        <a asp-action="Edit" class="btn btn-outline-dark form-control" asp-route-id="@Model"><i class="fas fa-edit"></i>&nbsp; Edit</a>
+    </div>
+    <div class="col-3">
+        <a asp-action="Delete" class="btn btn-outline-dark form-control" asp-route-id="@Model"><i class="fas fa-trash"></i>&nbsp; Delete</a>
+    </div>
+    <div class="col-3">
+        <a asp-action="Index" class="btn btn-outline-dark form-control"><i class="fas fa-arrow-left"></i>&nbsp; Back</a>
+    </div>
+</div>
