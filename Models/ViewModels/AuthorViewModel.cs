@@ -10,5 +10,6 @@ namespace Books.Models.ViewModels
         public Author Author { get; set; }
         public IEnumerable<Language> Languages { get; set; }
         public IEnumerable<Genre> Genres { get; set; }
+        public string StatusMessage { get; set; }
     }
 }

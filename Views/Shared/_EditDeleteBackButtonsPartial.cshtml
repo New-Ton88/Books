@@ -2,10 +2,10 @@
 
 <div class="row">
     <div class="col-3">
-        <a asp-action="Edit" class="btn btn-outline-dark form-control" asp-route-id="@Model"><i class="fas fa-edit"></i>&nbsp; Edit</a>
+        <a asp-action="Edit" class="btn btn-outline-dark form-control" asp-route-id="@Model" id="editButton"><i class="fas fa-edit"></i>&nbsp; Edit</a>
     </div>
     <div class="col-3">
-        <a asp-action="Delete" class="btn btn-outline-dark form-control" asp-route-id="@Model"><i class="fas fa-trash"></i>&nbsp; Delete</a>
+        <button class="btn btn-outline-dark form-control" id="deleteButton"><i class="fas fa-trash"></i>&nbsp; Delete</button>
     </div>
     <div class="col-3">
         <a asp-action="Index" class="btn btn-outline-dark form-control"><i class="fas fa-arrow-left"></i>&nbsp; Back</a>

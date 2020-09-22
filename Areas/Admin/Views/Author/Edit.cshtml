@@ -11,7 +11,7 @@
 
 <partial name="_StatusMessagePartial" model="@TempData["StatusMessage"]" />
 
-<form asp-action="Create" enctype="multipart/form-data">
+<form asp-action="Edit" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="text-dark">
         <div class="py-1">
@@ -95,7 +95,7 @@
         </div>
         <div class="row">
             <div class="offset-2 col-5 px-0">
-                <partial name="_EditAndBackButtonsPartial" model="@Model.Author.Id" />
+                <partial name="_EditAndBackToDetailsButtonsPartial" model="@Model.Author.Id" />
             </div>
         </div>
     </div>
@@ -103,4 +103,14 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+ 
+    <script>
+        // When back button is clicked go back 
+        // to details view
+        $("#backButton").click(function (e) {
+            e.preventDefault();
+            console.log("back button clicked");
+            history.back();
+        })
+    </script>
 }

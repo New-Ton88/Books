@@ -108,7 +108,7 @@ namespace Books.Areas.Admin.Controllers
                         // ------------------------------
                         if (authorNameExists)
                         {
-                            StatusMessage += "\nError: Author with " + author.Alias + " alias already exists!";
+                            StatusMessage = "Error: Author with " + author.Name + " name and with " + author.Alias + " alias already exists!";
                         }
                         // If author name doesn't exists then 
                         // show only error message for alias
@@ -161,7 +161,7 @@ namespace Books.Areas.Admin.Controllers
                         // ------------------------------
                         var uploads = Path.Combine(webRootPath, SD.AuthorsImgPath + SD.DefaultAuthorImgName);
                         var newImgPath = SD.AuthorsImgPath + AuthorVM.Author.Id + ".jpg";
-                        System.IO.File.Copy(uploads, webRootPath + newImgPath);
+                        System.IO.File.Copy(webRootPath + uploads, webRootPath + newImgPath);
 
                         // Add img image path into database
                         // ------------------------------
@@ -173,6 +173,8 @@ namespace Books.Areas.Admin.Controllers
                     // ------------------------------
                     await _db.SaveChangesAsync();
 
+                    StatusMessage = AuthorVM.Author.Name + " successfully created";
+
                     // Redirect into index page
                     // ------------------------------
                     return RedirectToAction(nameof(Index));
@@ -182,6 +184,9 @@ namespace Books.Areas.Admin.Controllers
 
             // If something fails go back to the same view
             // ------------------------------
+            AuthorVM.Genres = _db.Genre;
+            AuthorVM.Languages = _db.Language;
+            AuthorVM.StatusMessage = StatusMessage;
             return View(AuthorVM);
 
         }
@@ -265,7 +270,8 @@ namespace Books.Areas.Admin.Controllers
                     authorFromDb.Image = SD.AuthorsImgPath + id + extension;
                 }
 
-
+                // Update data from database
+                // ------------------------------
                 authorFromDb.Name = AuthorVM.Author.Name;
                 authorFromDb.Alias = AuthorVM.Author.Alias;
                 authorFromDb.Birthday = AuthorVM.Author.Birthday;
@@ -287,43 +293,24 @@ namespace Books.Areas.Admin.Controllers
                 authorFromDb.Language = AuthorVM.Author.Language;
                 authorFromDb.LanguageId = AuthorVM.Author.LanguageId;
 
+                // Apply changes to database
+                // ------------------------------
                 await _db.SaveChangesAsync();
 
+                // Return status message
+                // ------------------------------
                 StatusMessage = author.Name + " succesfully updated.";
 
+                // Go back to Index view
+                // ------------------------------
                 return RedirectToAction(nameof(Index));
             }
             return View(AuthorVM);
         }
 
-        // GET: Admin/Author/Delete/id
+
+        // POST: Admin/Author/Delete/id
         // ------------------------------
-        public async Task<IActionResult> Delete(short? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var author = await _db.Author
-                .Include(a => a.Genre01)
-                .Include(a => a.Genre02)
-                .Include(a => a.Genre03)
-                .Include(a => a.Genre04)
-                .Include(a => a.Genre05)
-                .Include(a => a.Genre06)
-                .Include(a => a.Genre07)
-                .Include(a => a.Language)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            return View(author);
-        }
-
-        // POST: Admin/Author/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(short id)
@@ -331,6 +318,9 @@ namespace Books.Areas.Admin.Controllers
             var author = await _db.Author.FindAsync(id);
             _db.Author.Remove(author);
             await _db.SaveChangesAsync();
+
+            StatusMessage = author.Name + " successfully deleted";
+
             return RedirectToAction(nameof(Index));
         }
 

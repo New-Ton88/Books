@@ -9,7 +9,7 @@
 
 <hr />
 
-<partial name="_StatusMessagePartial" model="@TempData["StatusMessage"]" />
+<partial name="_StatusMessagePartial" model=Model.StatusMessage />
 
 <form asp-action="Create" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
