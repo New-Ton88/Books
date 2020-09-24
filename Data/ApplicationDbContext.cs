@@ -30,5 +30,6 @@ namespace Books.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<Language> Language { get; set; }
         public DbSet<Author> Author { get; set; }
+        public DbSet<Book> Book { get; set; }
     }
 }

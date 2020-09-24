@@ -35,6 +35,8 @@
     <Compile Remove="Migrations\20200915215903_addAuthor.Designer.cs" />
     <Compile Remove="Migrations\20200915215935_addAuthor.cs" />
     <Compile Remove="Migrations\20200915215935_addAuthor.Designer.cs" />
+    <Compile Remove="Migrations\20200924232914_addBooks.cs" />
+    <Compile Remove="Migrations\20200924232914_addBooks.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
