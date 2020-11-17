@@ -9,6 +9,10 @@ using Books.Data;
 using Books.Models;
 using Microsoft.AspNetCore.Hosting;
 using Books.Models.ViewModels;
+using System.IO;
+using Books.StaticDetails;
+using Books.Functional.Interfaces;
+using Books.Functional.Classes;
 
 namespace Books.Areas.Admin.Controllers
 {
@@ -16,7 +20,7 @@ namespace Books.Areas.Admin.Controllers
     public class BookController : Controller
     {
         private readonly ApplicationDbContext _db;
-        private readonly IWebHostEnvironment _webhostEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         [BindProperty]
         public BookViewModel BookVM { get; set; }
@@ -24,10 +28,32 @@ namespace Books.Areas.Admin.Controllers
         [TempData]
         public string StatusMessage { get; set; }
 
+        IAuthorSupport AuthorSupport;
+
         public BookController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
-            _webhostEnvironment = webHostEnvironment;
+            _webHostEnvironment = webHostEnvironment;
+            BookVM = new BookViewModel
+            {
+                Book = new Book() { 
+                    Author = new Author(),
+                    Cover = new Cover(),
+                    Genre = new Genre(),
+                    Publisher = new Publisher(),
+                    Language = new Language(),
+                },
+                Authors = _db.Author,
+                Covers = _db.Cover,
+                Genres = _db.Genre,
+                Publishers = _db.Publisher,
+                Languages = _db.Language,
+            };
+            AuthorSupport = new AuthorSupport()
+            {
+                WebRootPath = webHostEnvironment.WebRootPath,
+                Db = db,
+            };
         }
 
         // GET: Admin/Book
@@ -54,17 +80,8 @@ namespace Books.Areas.Admin.Controllers
         // =================
         public async Task<IActionResult> Create()
         {
-            BookVM = new BookViewModel
-            {
-
-                Authors = await _db.Author.ToListAsync(),
-                Covers = await _db.Cover.ToListAsync(),
-                Genres = await _db.Genre.Include(a => a.Category).ToListAsync(),
-                Publishers = await _db.Publisher.ToListAsync(),
-                Languages = await _db.Language.ToListAsync()
-
-            };
-            
+            BookVM.Book.Genre = new Genre();
+            BookVM.Categories = await _db.Category.ToListAsync();
 
             return View(BookVM);
         }
@@ -88,6 +105,27 @@ namespace Books.Areas.Admin.Controllers
         //    return View(book);
         //}
 
+        [HttpPost]
+        [ActionName("Create")]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreatePost()
+        {
+            return View(BookVM);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async ValueTask<Tuple<short, string>> CreateAuthor(AuthorViewModel authorVM)
+        {
+
+            var status = await AuthorSupport.AuthorCreate(ModelState, authorVM, HttpContext);
+            return status;
+            //if (exitCode == 0)
+            //{
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+        }
 
         // GET: Admin/Book/Details/id
         // =================

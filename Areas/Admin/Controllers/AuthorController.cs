@@ -15,6 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Books.StaticDetails;
 using System.Net;
 using Microsoft.AspNetCore.Components.Web;
+using Books.Functional.Interfaces;
+using Books.Functional.Classes;
 
 namespace Books.Areas.Admin.Controllers
 {
@@ -34,6 +36,9 @@ namespace Books.Areas.Admin.Controllers
 
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        IAuthorSupport AuthorSupport;
+
+
         public AuthorController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
@@ -44,6 +49,11 @@ namespace Books.Areas.Admin.Controllers
                 Genres = _db.Genre,
                 Languages = _db.Language
             };
+            AuthorSupport = new AuthorSupport() {
+                WebRootPath = webHostEnvironment.WebRootPath,
+                Db = db,
+            };
+
         }
 
         // GET: Admin/Author
@@ -78,115 +88,15 @@ namespace Books.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePost()
         {
-            // Check if model state is valid
-            // ------------------------------
-            if (ModelState.IsValid)
+            short exitCode;
+
+            (exitCode, StatusMessage) = await AuthorSupport.AuthorCreate(ModelState, AuthorVM, HttpContext);
+            
+            if (exitCode == 0)
             {
-
-                // Check if author name or alias entered already exists
-                // ------------------------------
-                var authors = _db.Author.Where(a => a.Name == AuthorVM.Author.Name || a.Alias == AuthorVM.Author.Alias);
-
-                // If author already exists inform user
-                // ------------------------------
-                if (authors.Count() > 0)
-                {
-                    // Verify if user name already exists
-                    // ------------------------------
-                    var author = authors.First();
-                    var authorNameExists = author.Name == AuthorVM.Author.Name;
-                    if (authorNameExists)
-                    {
-                        StatusMessage = "Error: Author with " + author.Name + " name already exists!";
-                    }
-
-                    // Verify if user alias already exists
-                    // ------------------------------
-                    if (author.Alias == AuthorVM.Author.Alias)
-                    {
-                        // If user Name also exist then append in newline message
-                        // ------------------------------
-                        if (authorNameExists)
-                        {
-                            StatusMessage = "Error: Author with " + author.Name + " name and with " + author.Alias + " alias already exists!";
-                        }
-                        // If author name doesn't exists then 
-                        // show only error message for alias
-                        // ------------------------------
-                        else
-                        {
-                            StatusMessage = "Error: Author with " + author.Alias + " alias already exists!";
-                        }
-                        
-                    }
-
-                }
-                // If author isn't exists in db then add it
-                // ------------------------------
-                else
-                {
-                    _db.Author.Add(AuthorVM.Author);
-                    await _db.SaveChangesAsync();
-
-                    // Image saving section 
-                    // ------------------------------
-                    var webRootPath = _webHostEnvironment.WebRootPath;
-                    var files = HttpContext.Request.Form.Files;
-                    var authorFromDb = await _db.Author.FindAsync(AuthorVM.Author.Id);
-
-                    if (files.Count() > 0)
-                    {
-                        // Files uploaded
-                        // ------------------------------
-                        var uploads = Path.Combine(webRootPath, "img", "Authors");
-                        var extension = Path.GetExtension(files[0].FileName);
-
-                        // Create file for author
-                        // ------------------------------
-                        using (var fileStream = new FileStream(Path.Combine(uploads, AuthorVM.Author.Id + extension), FileMode.Create))
-                        {
-                            // Add file added by user into created file
-                            // ------------------------------
-                            files[0].CopyTo(fileStream);
-                        }
-
-                        // Add img image path into database
-                        // ------------------------------
-                        authorFromDb.Image = SD.AuthorsImgPath + AuthorVM.Author.Id + extension;
-                    }
-                    else
-                    {
-                        // image wasn't uploaded so create image for current author
-                        // from default image and save it's path into db
-                        // ------------------------------
-                        var uploads = Path.Combine(webRootPath, SD.AuthorsImgPath + SD.DefaultAuthorImgName);
-                        var newImgPath = SD.AuthorsImgPath + AuthorVM.Author.Id + ".jpg";
-                        System.IO.File.Copy(webRootPath + uploads, webRootPath + newImgPath);
-
-                        // Add img image path into database
-                        // ------------------------------
-                        authorFromDb.Image = newImgPath;
-
-                    }
-
-                    // Save Changes to database
-                    // ------------------------------
-                    await _db.SaveChangesAsync();
-
-                    StatusMessage = AuthorVM.Author.Name + " successfully created";
-
-                    // Redirect into index page
-                    // ------------------------------
-                    return RedirectToAction(nameof(Index));
-
-                }
+                return RedirectToAction(nameof(Index));
             }
 
-            // If something fails go back to the same view
-            // ------------------------------
-            AuthorVM.Genres = _db.Genre;
-            AuthorVM.Languages = _db.Language;
-            AuthorVM.StatusMessage = StatusMessage;
             return View(AuthorVM);
 
         }
@@ -241,9 +151,11 @@ namespace Books.Areas.Admin.Controllers
                 // ------------------------------
                 if (files.Count() > 0)
                 {
-                    var webRootPath = _webHostEnvironment.WebRootPath;
-                    var uploads = Path.Combine(webRootPath + SD.AuthorsImgPath);
-                    var extension = Path.GetExtension(files[0].FileName);
+
+                    var fileDetails = await AuthorSupport.ImgCreateAsync(AuthorVM, files[0]);
+                    var uploads = fileDetails[0];
+                    var extension = fileDetails[1];
+
 
                     try {
                         var imagePath = authorFromDb.Image.TrimStart('\\');
@@ -257,7 +169,7 @@ namespace Books.Areas.Admin.Controllers
                     }
                     catch
                     {
-
+                        
                     };
 
                     // add new image

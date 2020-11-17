@@ -338,3 +338,11 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+*.jpg
+/Views/Shared/Components/AuthorCreate/Default.cshtml
+/Views/Shared/_ModalCreateObjectPartial.cshtml
+/Views/Shared/_LayoutViewComponent.cshtml
+/wwwroot/js/Author.js
+/Views/Shared/_CreateAndCloseModalButtonsPartial.cshtml
+/Views/Shared/_AuthorCreatePartial.cshtml
+/ViewComponents/AuthorCreateViewComponent.cs
