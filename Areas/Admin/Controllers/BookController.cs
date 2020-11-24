@@ -43,11 +43,12 @@ namespace Books.Areas.Admin.Controllers
                     Publisher = new Publisher(),
                     Language = new Language(),
                 },
-                Authors = _db.Author,
-                Covers = _db.Cover,
-                Genres = _db.Genre,
-                Publishers = _db.Publisher,
-                Languages = _db.Language,
+                Authors = _db.Author.ToList(),
+                Covers = _db.Cover.ToList(),
+                Genres = _db.Genre.ToList(),
+                Publishers = _db.Publisher.ToList(),
+                Languages = _db.Language.ToList(),
+                Categories = _db.Category.ToList()
             };
             AuthorSupport = new AuthorSupport()
             {
@@ -70,7 +71,6 @@ namespace Books.Areas.Admin.Controllers
 
             // Return books to View
             // ----------------------
-
             return View(await books);
 
         }
@@ -78,11 +78,8 @@ namespace Books.Areas.Admin.Controllers
 
         // GET: Admin/Book/Create
         // =================
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            BookVM.Book.Genre = new Genre();
-            BookVM.Categories = await _db.Category.ToListAsync();
-
             return View(BookVM);
         }
 
