@@ -17,87 +17,125 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Name">Book Name</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Name" />
-            <span asp-validation-for="@Model.Book.Name"></span>
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Name" autocomplete="off"/>
+            <span class="text-danger" asp-validation-for="@Model.Book.Name"></span>
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Author.Name">Author</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Author.Name" />
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Author.Name" autocomplete="off"/>
             <select hidden asp-for="@Model.Book.Author.Id"
                     asp-items="Model.Authors.ToSelectListItem(Model.Book.Author.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Author"' />
-            <span asp-validation-for="@Model.Book.Author.Name"></span>
+            <span class="text-danger" asp-validation-for="@Model.Book.Author.Name"></span>
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Language.Name">Language</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Language.Name" />
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Language.Name" autocomplete="off"/>
             <partial name="_CreateButtonGreenPartial" model='"Language"' />
-            <span asp-validation-for="@Model.Book.Language.Name"></span>
+            <span class="text-danger" asp-validation-for="@Model.Book.Language.Name"></span>
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Publisher.Name">Publisher</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Publisher.Name" />
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Publisher.Name" autocomplete="off"/>
             <partial name="_CreateButtonGreenPartial" model='"Publisher"' />
-            <span asp-validation-for="@Model.Book.Publisher.Name"></span>
+            <span class="text-danger" asp-validation-for="@Model.Book.Publisher.Name"></span>
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Genre.Category.Name">Category</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Category.Name" />
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Category.Name"autocomplete="off" />
             <partial name="_CreateButtonGreenPartial" model='"Category"' />
-            <span asp-validation-for="@Model.Book.Genre.Category.Name"></span>
+            <span class="text-danger" asp-validation-for="@Model.Book.Genre.Category.Name"></span>
         </div>
         <div class="form-group row">
             <label class="col-2 text-left" asp-for="@Model.Book.Genre.Name">Genre</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Name" />
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Name" autocomplete="off"/>
             <partial name="_CreateButtonGreenPartial" model='"Genre"' />
-            <span asp-validation-for="@Model.Book.Genre.Name"></span>
+            <span class="text-danger" asp-validation-for="@Model.Book.Genre.Name"></span>
         </div>
         <div class="form-group row">
             <label class="col-2 text-left" asp-for="@Model.Book.Cover.Name">Cover</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Cover.Name" />
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Cover.Name" autocomplete="off"/>
             <partial name="_CreateButtonGreenPartial" model='"Cover"' />
-            <span asp-validation-for="@Model.Book.Cover.Name"></span>
+            <span class="text-danger" asp-validation-for="@Model.Book.Cover.Name"></span>
         </div>
     </div>
 </form>
 
+<div id="filteredList" class="">
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+        var filteredList = document.getElementById("filteredList");
+        var selectedInput = null;
         $(".activeSearch").on("input", function (e) {
+            e.preventDefault();
+            filteredList.innerHTML = "";
             var value = this.value;
             if (value) {
-                var results = {};
+                selectedInput = this;
                 var matchedOptions = [];
-                var $list = $(this).next();               
+                var $this = $(this);
+                var $list = $this.next();
+                var inputPos = $this.position();
+                var inputHeight = $this.height();
+                var inputWidth = $this.outerWidth();
+                //var listPos = {
+                //    left: inputPos["left"],
+                //    top: inputPos["top"] + inputHeight
+                //};
+                filteredList.style.left = `${inputPos["left"]}px`;
+                filteredList.style.top = `${inputPos["top"] + inputHeight + 5}px`;
+                filteredList.style.width = `${inputWidth}px`
+                // Use each() to cast jQuery object into javascript
                 $($list).each(function () {
-                    for (var i = 0; i < this.options.length; i++) {
-                        var optionText = this.options[i].text;
-                        var splittedValue = value.trim().split(" ");
-                        splittedValue.forEach(function (word) {
-                            if (optionText.toLowerCase().includes(word.toLowerCase())) {
-                                var resultValue = results[optionText];
-                                if (resultValue) {
-                                    results[optionText] = resultValue + word.length;
-                                }
-                                else {
-                                    results[optionText] = word.length;
-                                }
-                            }
-                            
-                        })
-                    }
-                        
+                    matchedOptions = searchAlgorithm(this, value).slice(0, 5);
                 })
-                matchedOptions = sortDict(results);
-                console.log(matchedOptions);  
-            }   
+                if (matchedOptions.length > 0) {
+                    filteredList.style.display = "block";
+                    matchedOptions.forEach(function (option) {
+                        var newEl = document.createElement("p");
+                        var text = document.createTextNode(option);
+                        newEl.appendChild(text);
+                        newEl.className = "filtered my-0"
+                        filteredList.appendChild(newEl);
+                    })
+                }
+                else {
+                    filteredList.style.display = "none";
+                }
+            }
+            else {
+                filteredList.style.display = "none";
+
+            }
+            
         })
 
-        function stringContains(inputObject, searchString) {
-            return inputObject.indexOf(searchString) >= 0;
+        function searchAlgorithm(listNode, inputValue) {
+            var results = {};
+            for (var i = 0; i < listNode.options.length; i++) {
+                var optionText = listNode.options[i].text;
+                var splittedValue = inputValue.trim().split(" ");
+                splittedValue.forEach(function (word) {
+                    if (optionText.toLowerCase().includes(word.toLowerCase())) {
+                        var resultValue = results[optionText];
+                        if (resultValue) {
+                            results[optionText] = resultValue + word.length;
+                        }
+                        else {
+                            results[optionText] = word.length;
+                        }
+                    }
+
+                })
+            }
+
+            return sortDict(results);
+            //console.log(matchedOptions); 
+
         }
 
         function sortDict(dict) {
@@ -117,5 +155,15 @@
 
             return sorted;
         }
+
+        function inputSet(e) { 
+            e.stopPropagation();
+            selectedInput.value = e.target.textContent;
+            filteredList.style.display = "none";
+            filteredList.innerHTML = "";
+        }
+
+        filteredList.addEventListener("click", function (e) { inputSet(e) }, false);
+
     </script>
 }
