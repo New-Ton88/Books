@@ -17,7 +17,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Name">Book Name</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Name" autocomplete="off"/>
+            <input class="col-5" type="text" asp-for="@Model.Book.Name" autocomplete="off"/>
             <span class="text-danger" asp-validation-for="@Model.Book.Name"></span>
         </div>
         <div class="row form-group">
@@ -30,31 +30,41 @@
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Language.Name">Language</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Language.Name" autocomplete="off"/>
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Language.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Language.Id"
+                    asp-items="Model.Languages.ToSelectListItem(Model.Book.Language.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Language"' />
             <span class="text-danger" asp-validation-for="@Model.Book.Language.Name"></span>
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Publisher.Name">Publisher</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Publisher.Name" autocomplete="off"/>
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Publisher.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Publisher.Id"
+                    asp-items="Model.Publishers.ToSelectListItem(Model.Book.Publisher.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Publisher"' />
             <span class="text-danger" asp-validation-for="@Model.Book.Publisher.Name"></span>
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Genre.Category.Name">Category</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Category.Name"autocomplete="off" />
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Category.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Genre.Category.Id"
+                    asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre.Category.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Category"' />
             <span class="text-danger" asp-validation-for="@Model.Book.Genre.Category.Name"></span>
         </div>
         <div class="form-group row">
             <label class="col-2 text-left" asp-for="@Model.Book.Genre.Name">Genre</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Name" autocomplete="off"/>
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Genre.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Genre.Id"
+                    asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Genre"' />
             <span class="text-danger" asp-validation-for="@Model.Book.Genre.Name"></span>
         </div>
         <div class="form-group row">
             <label class="col-2 text-left" asp-for="@Model.Book.Cover.Name">Cover</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Cover.Name" autocomplete="off"/>
+            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Cover.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Cover.Id"
+                    asp-items="Model.Covers.ToSelectListItem(Model.Book.Cover.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Cover"' />
             <span class="text-danger" asp-validation-for="@Model.Book.Cover.Name"></span>
         </div>
@@ -68,73 +78,99 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
+
+        // =============== VARIABLES ===============
+
         var filteredList = document.getElementById("filteredList");
         var selectedInput = null;
+        var activeSearch = document.getElementsByClassName("activeSearch");
+
+        // =============== EVENTS ===============
+
+        for (var i = 0; i < activeSearch.length; i++) {
+            activeSearch[i].addEventListener("blur", async function () {
+                await sleep(125);
+                clearNode(filteredList);
+            }, false);
+        }
+
+        filteredList.addEventListener("click", function (e) { inputSet(e) }, false);
+        
         $(".activeSearch").on("input", function (e) {
+           
             e.preventDefault();
             filteredList.innerHTML = "";
             var value = this.value;
             if (value) {
                 selectedInput = this;
-                var matchedOptions = [];
                 var $this = $(this);
                 var $list = $this.next();
-                var inputPos = $this.position();
-                var inputHeight = $this.height();
-                var inputWidth = $this.outerWidth();
-                //var listPos = {
-                //    left: inputPos["left"],
-                //    top: inputPos["top"] + inputHeight
-                //};
-                filteredList.style.left = `${inputPos["left"]}px`;
-                filteredList.style.top = `${inputPos["top"] + inputHeight + 5}px`;
-                filteredList.style.width = `${inputWidth}px`
+                var matchedOptions = [];
+                moveFilterWindow(filteredList, this);
+
                 // Use each() to cast jQuery object into javascript
                 $($list).each(function () {
-                    matchedOptions = searchAlgorithm(this, value).slice(0, 5);
+                    matchedOptions = searchAlgorithm(this, value, 5);
                 })
-                if (matchedOptions.length > 0) {
-                    filteredList.style.display = "block";
-                    matchedOptions.forEach(function (option) {
-                        var newEl = document.createElement("p");
-                        var text = document.createTextNode(option);
-                        newEl.appendChild(text);
-                        newEl.className = "filtered my-0"
-                        filteredList.appendChild(newEl);
-                    })
-                }
-                else {
-                    filteredList.style.display = "none";
-                }
+                fillNode(filteredList, matchedOptions);
             }
             else {
                 filteredList.style.display = "none";
-
             }
             
         })
 
-        function searchAlgorithm(listNode, inputValue) {
-            var results = {};
-            for (var i = 0; i < listNode.options.length; i++) {
-                var optionText = listNode.options[i].text;
-                var splittedValue = inputValue.trim().split(" ");
-                splittedValue.forEach(function (word) {
-                    if (optionText.toLowerCase().includes(word.toLowerCase())) {
-                        var resultValue = results[optionText];
-                        if (resultValue) {
-                            results[optionText] = resultValue + word.length;
-                        }
-                        else {
-                            results[optionText] = word.length;
-                        }
-                    }
+        
+        $(".activeSearch").on("dblclick", function (e) {
+            filteredList.innerHTML = "";
+            selectedInput = this;
+            moveFilterWindow(filteredList, this);
+            var $list = $(this).next();
+            var matchedOptions = [];
+            $list.each(function () {
+                matchedOptions = searchAlgorithm(this, null, 10)
+            })
+            
+            fillNode(filteredList, matchedOptions);
+        })
+        
 
-                })
+        // =============== FUNCTIONS ===============
+
+        function searchAlgorithm(listNode, inputValue = null, listSize = null) {
+            var sortedResults = [];
+            if (inputValue) {
+                var results = {};
+                for (var i = 0; i < listNode.options.length; i++) {
+                    var optionText = listNode.options[i].text;
+                    var splittedValue = inputValue.trim().split(" ");
+                    splittedValue.forEach(function (word) {
+                        if (optionText.toLowerCase().includes(word.toLowerCase())) {
+                            var resultValue = results[optionText];
+                            if (resultValue) {
+                                results[optionText] = resultValue + word.length;
+                            }
+                            else {
+                                results[optionText] = word.length;
+                            }
+                        }
+
+                    })
+                }
+                sortedResults = sortDict(results);
+            }
+            else {
+                var results = [];
+                for (var i = 0; i < listNode.options.length; i++) {
+                    results[i] = listNode.options[i].text;
+                }
+                sortedResults = results.sort();
             }
 
-            return sortDict(results);
-            //console.log(matchedOptions); 
+            if (listSize) {
+                sortedResults = sortedResults.slice(0, listSize);
+            }
+            return sortedResults;
 
         }
 
@@ -156,14 +192,51 @@
             return sorted;
         }
 
-        function inputSet(e) { 
-            e.stopPropagation();
-            selectedInput.value = e.target.textContent;
-            filteredList.style.display = "none";
-            filteredList.innerHTML = "";
+        function inputSet(e) {
+            if (e.target.tagName == "P") {
+                e.stopPropagation();
+                selectedInput.value = e.target.textContent;
+                clearNode(filteredList);
+            } 
         }
 
-        filteredList.addEventListener("click", function (e) { inputSet(e) }, false);
+
+        function moveFilterWindow(filterNode, node) {
+            var $this = $(node);
+            var inputPos = $this.position();
+            var inputHeight = $this.height();
+            var inputWidth = $this.outerWidth();
+            filterNode.style.left = `${inputPos["left"]}px`;
+            filterNode.style.top = `${inputPos["top"] + inputHeight + 5}px`;
+            filterNode.style.width = `${inputWidth}px`
+        }
+
+        function fillNode(filterNode, matchedOptions) {
+            if (matchedOptions.length > 0) {
+                filterNode.style.display = "block";
+                matchedOptions.forEach(function (option) {
+                    var newEl = document.createElement("p");
+                    var text = document.createTextNode(option);
+                    newEl.appendChild(text);
+                    newEl.className = "filtered my-0"
+                    filterNode.appendChild(newEl);
+                })
+            }
+            else {
+                clearNode(filterNode);
+            }
+        }
+
+        function clearNode(node) {
+            node.style.display = "none";
+            node.innerHTML = "";
+        }
+
+        function sleep(ms) {
+            return new Promise(
+                resolve => setTimeout(resolve, ms)
+            );
+        }
 
     </script>
 }

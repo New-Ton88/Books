@@ -39,7 +39,9 @@ namespace Books.Areas.Admin.Controllers
                 Book = new Book() { 
                     Author = new Author(),
                     Cover = new Cover(),
-                    Genre = new Genre(),
+                    Genre = new Genre { 
+                    Category = new Category()
+                    },
                     Publisher = new Publisher(),
                     Language = new Language(),
                 },
