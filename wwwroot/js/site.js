@@ -9,7 +9,7 @@
 // Create function to call when page is loaded and Category is changed
 // ------------------
 
-function updateGenresList() {
+export function updateGenresList() {
 
     // Currently selected category value get
     // ------------------
@@ -31,7 +31,7 @@ function updateGenresList() {
 
             // Parse json data
             // ------------------
-            results = JSON.parse(data);
+            var results = JSON.parse(data);
 
             // If no data is found don't add section with genres
             // ------------------
@@ -71,23 +71,22 @@ function updateGenresList() {
 
 // 1#
 // ------------------
-$(function () {
-    updateGenresList();
-});
+//$(function () {
+//    updateGenresList();
+//});
 
 // 2#
 // ------------------
-$("#ddlCategories").on("change", function () {
-    updateGenresList();
-});
+//$("#ddlCategories").on("change", function () {
+//    updateGenresList();
+//});
 
 // ============ ADMIN/AUTHOR ============
 
-function dateUpdate() {
+export function dateUpdate() {
     // Function updates dateInput with value dateCalendar
     // ------------------
     var $dateCalendar = $("#dateCalendar").val();
-    console.log($dateCalendar)
     $("#dateInput").val($dateCalendar);
 }
 
@@ -95,6 +94,9 @@ function dateUpdate() {
 // Update value of dateInput when date calendar
 // value changes
 // ------------------
-$("#dateCalendar").on("change", function () {
-    dateUpdate();
-})
+//$("#dateCalendar").on("change", function () {
+//    dateUpdate();
+//})
+
+// 
+

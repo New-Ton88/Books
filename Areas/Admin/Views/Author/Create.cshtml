@@ -101,3 +101,17 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script type="module">
+
+    import { dateUpdate } from "/js/site.js";
+
+    // Update value of dateInput when date calendar
+    // value changes
+    // ------------------
+    $("#dateCalendar").on("change", function () {
+        dateUpdate();
+    })
+
+
+</script>

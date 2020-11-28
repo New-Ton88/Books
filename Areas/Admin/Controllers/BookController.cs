@@ -253,5 +253,26 @@ namespace Books.Areas.Admin.Controllers
         {
             return _db.Book.Any(e => e.Id == id);
         }
+
+        // GET Genres action
+        // -------------------------
+        [ActionName("GenreGet")]
+        public async Task<IActionResult> GenreGet(short id)
+        {
+            // Create genres object
+            // -------------------------
+            List<Genre> genres = new List<Genre>();
+
+            // get genres from database with requested category id
+            // -------------------------
+            genres = await (from genre in _db.Genre
+                            where genre.CategoryId == id
+                            select genre).ToListAsync();
+
+            // return genres as json format
+            // -------------------------
+            return Json(new SelectList(genres, "Id", "Name"));
+        }
+
     }
 }

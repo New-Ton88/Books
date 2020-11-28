@@ -39,3 +39,24 @@
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
+<script type="module">
+    import { updateGenresList } from '/js/site.js';
+
+    /*  updateGenresList has to be called 2 times:
+        1. When page is loaded
+        2. When category is selected from drop-down list
+    */
+
+    // 1#
+    // ------------------
+    $(function () {
+        updateGenresList();
+    });
+
+    // 2#
+    // ------------------
+    $("#ddlCategories").on("change", function () {
+        updateGenresList();
+    });
+
+</script>

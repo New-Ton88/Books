@@ -103,13 +103,28 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
- 
+
     <script>
-        // When back button is clicked go back 
+        // When back button is clicked go back
         // to details view
         $("#backButton").click(function (e) {
             e.preventDefault();
             history.back();
         })
     </script>
+
+    <script type="module">
+
+        import { dateUpdate } from "/js/site.js";
+
+        // Update value of dateInput when date calendar
+        // value changes
+        // ------------------
+        $("#dateCalendar").on("change", function () {
+            dateUpdate();
+        })
+
+
+    </script>
+
 }
