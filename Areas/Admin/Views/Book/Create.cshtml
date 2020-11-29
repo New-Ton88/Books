@@ -22,7 +22,7 @@
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Author.Name">Author</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Author.Name" autocomplete="off" />
+            <input class="col-5 activeSearch" id="inputAuthor" type="text" asp-for="@Model.Book.Author.Name" autocomplete="off" />
             <select hidden asp-for="@Model.Book.Author.Id"
                     asp-items="Model.Authors.ToSelectListItem(Model.Book.Author.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Author"' />
@@ -30,7 +30,7 @@
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Language.Name">Language</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Language.Name" autocomplete="off" />
+            <input class="col-5 activeSearch" id="inputLanguage" type="text" asp-for="@Model.Book.Language.Name" autocomplete="off" />
             <select hidden asp-for="@Model.Book.Language.Id"
                     asp-items="Model.Languages.ToSelectListItem(Model.Book.Language.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Language"' />
@@ -38,7 +38,7 @@
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Publisher.Name">Publisher</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Publisher.Name" autocomplete="off" />
+            <input class="col-5 activeSearch" id="inputPublisher" type="text" asp-for="@Model.Book.Publisher.Name" autocomplete="off" />
             <select hidden asp-for="@Model.Book.Publisher.Id"
                     asp-items="Model.Publishers.ToSelectListItem(Model.Book.Publisher.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Publisher"' />
@@ -46,7 +46,7 @@
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Genre.Category.Name">Category</label>
-            <input class="col-5 activeSearch" id="ddlCategory" type="text" asp-for="@Model.Book.Genre.Category.Name" autocomplete="off" />
+            <input class="col-5 activeSearch" id="inputCategory" type="text" asp-for="@Model.Book.Genre.Category.Name" autocomplete="off" />
             <select hidden id="listCategory" asp-for="@Model.Book.Genre.Category.Id"
                     asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre.Category.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Category"' />
@@ -54,7 +54,7 @@
         </div>
         <div class="form-group row">
             <label class="col-2 text-left" asp-for="@Model.Book.Genre.Name">Genre</label>
-            <input class="col-5 activeSearch" id="inputGenre" type="text" asp-for="@Model.Book.Genre.Name" autocomplete="off" />
+            <input disabled class="col-5 activeSearch" id="inputGenre" type="text" asp-for="@Model.Book.Genre.Name" autocomplete="off" />
             <select hidden id="listGenres" asp-for="@Model.Book.Genre.Id"
                     asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Genre"' />
@@ -62,7 +62,7 @@
         </div>
         <div class="form-group row">
             <label class="col-2 text-left" asp-for="@Model.Book.Cover.Name">Cover</label>
-            <input class="col-5 activeSearch" type="text" asp-for="@Model.Book.Cover.Name" autocomplete="off" />
+            <input class="col-5 activeSearch" id="inputCover" type="text" asp-for="@Model.Book.Cover.Name" autocomplete="off" />
             <select hidden asp-for="@Model.Book.Cover.Id"
                     asp-items="Model.Covers.ToSelectListItem(Model.Book.Cover.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Cover"' />
@@ -70,6 +70,12 @@
         </div>
     </div>
 </form>
+
+<div class="row">
+    <div class="offset-2 col-5 px-0">
+        <partial name="_CreateAndBackButtonsPartial" />
+    </div>
+</div>
 
 <div id="filteredList" class="">
 </div>

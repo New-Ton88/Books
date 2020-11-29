@@ -3,11 +3,35 @@
 var filteredList = document.getElementById("filteredList");
 var selectedInput = null;
 var activeSearch = document.getElementsByClassName("activeSearch");
+$createBtn = $("#createBtn");
+var validationDict = {
+    "Author": false,
+    "Language": false,
+    "Publisher": false,
+    "Category": false,
+    "Genre": false,
+    "Cover": false
+}
+
 
 // =============== EVENTS ===============
 
+$createBtn.on("click", function (e) {
+    var valid = true;
+    for (var key in validationDict) {
+        valid = valid && validationDict[key];
+        if (!validationDict[key]) {
+            $(`#${key}`).next().text(`Select valid ${key} or create new one.`);
+        }
+    }
+    if (!valid) {
+        e.preventDefault();
+    }
+})
+
 for (var i = 0; i < activeSearch.length; i++) {
-    activeSearch[i].addEventListener("blur", async function () {
+    activeSearch[i].addEventListener("blur", async function () {  
+        validateInput(this);
         await sleep(125);
         clearNode(filteredList);
     }, false);
@@ -53,13 +77,26 @@ $(".activeSearch").on("dblclick", function (e) {
     fillNode(filteredList, matchedOptions);
 })
 
-$("#ddlCategory").on("change", function () {
-    $("#inputGenre").val('');
+$("#inputCategory").on("change", function () {
     updateGenresList();
     
 })
 
 // =============== FUNCTIONS ===============
+
+function validateInput(inputNode) {
+    var inputId = inputNode.id;
+    var key = inputId.replace("input", "");
+    var valid = false;
+    var tags = filteredList.getElementsByTagName("p");
+    for (var i = 0; i < tags.length; i++) {
+        var valid = tags[i].textContent.toLowerCase() == inputNode.value.toLowerCase();
+        if (valid) {
+            break;
+        }
+    }
+    validationDict[key] = valid;
+}
 
 function searchAlgorithm(listNode, inputValue = null, listSize = null) {
     var sortedResults = [];
@@ -120,9 +157,10 @@ function inputSet(e) {
     if (e.target.tagName == "P") {
         e.stopPropagation();
         selectedInput.value = e.target.textContent;
+        validateInput(selectedInput);
         clearNode(filteredList);
-        if (selectedInput.id == "ddlCategory") {
-            $("#inputGenre").val('');
+        $validationNode = $(selectedInput).next().next().next().text("");
+        if (selectedInput.id == "inputCategory") {
             updateGenresList();
         }
     }
@@ -170,7 +208,9 @@ function updateGenresList() {
 
     // Currently selected category value get
     // ------------------
-    var categorySelected = document.getElementById("ddlCategory").value;
+    var $inputGenre = $("#inputGenre");
+    $inputGenre.val('');
+    var categorySelected = document.getElementById("inputCategory").value;
     var list = document.getElementById("listCategory");
     var id = null;
     for (var i = 0; i < list.options.length; i++) {
@@ -187,6 +227,8 @@ function updateGenresList() {
     // start asynchronous call
     // ------------------
     if (id) {
+        $inputGenre.removeAttr("disabled");
+
         $.ajax({
             url: "/Admin/Book/GenreGet/" + id,
             type: "GET",
@@ -208,5 +250,10 @@ function updateGenresList() {
             }
         })
     }
+    else {
+        $inputGenre.attr("disabled", "disabled");
+    }
+
+
     
 }
