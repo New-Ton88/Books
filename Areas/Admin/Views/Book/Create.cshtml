@@ -21,12 +21,44 @@
             <span class="text-danger" asp-validation-for="@Model.Book.Name"></span>
         </div>
         <div class="row form-group">
-            <label class="col-2 text-left" asp-for="@Model.Book.Author.Name">Author</label>
-            <input class="col-5 activeSearch" id="inputAuthor" type="text" asp-for="@Model.Book.Author.Name" autocomplete="off" />
-            <select hidden asp-for="@Model.Book.Author.Id"
-                    asp-items="Model.Authors.ToSelectListItem(Model.Book.Author.Id)"></select>
-            <partial name="_CreateButtonGreenPartial" model='"Author"' />
-            <span class="text-danger" asp-validation-for="@Model.Book.Author.Name"></span>
+            <label class="col-2 text-left" asp-for="@Model.Book.Author01.Name">Author 1</label>
+            <input class="col-5 activeSearch" id="inputAuthor01" type="text" asp-for="@Model.Book.Author01.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Author01.Id"
+                    asp-items="Model.Authors.ToSelectListItem(Model.Book.Author01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Author01"' />
+            <span class="text-danger" asp-validation-for="@Model.Book.Author01.Name"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Author02.Name">Author 2</label>
+            <input class="col-5 activeSearch" id="inputAuthor02" type="text" asp-for="@Model.Book.Author02.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Author01.Id"
+                    asp-items="Model.Authors.ToSelectListItem(Model.Book.Author01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Author02"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Author03.Name">Author 3</label>
+            <input class="col-5 activeSearch" id="inputAuthor03" type="text" asp-for="@Model.Book.Author03.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Author01.Id"
+                    asp-items="Model.Authors.ToSelectListItem(Model.Book.Author01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Author03"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Author04.Name">Author 4</label>
+            <input class="col-5 activeSearch" id="inputAuthor04" type="text" asp-for="@Model.Book.Author04.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Author01.Id"
+                    asp-items="Model.Authors.ToSelectListItem(Model.Book.Author01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Author04"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Author05.Name">Author 5</label>
+            <input class="col-5 activeSearch" id="inputAuthor05" type="text" asp-for="@Model.Book.Author05.Name" autocomplete="off" />
+            <select hidden asp-for="@Model.Book.Author01.Id"
+                    asp-items="Model.Authors.ToSelectListItem(Model.Book.Author01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Author05"' />
+            <span class="text-danger"></span>
         </div>
         <div class="row form-group">
             <label class="col-2 text-left" asp-for="@Model.Book.Language.Name">Language</label>
@@ -44,22 +76,6 @@
             <partial name="_CreateButtonGreenPartial" model='"Publisher"' />
             <span class="text-danger" asp-validation-for="@Model.Book.Publisher.Name"></span>
         </div>
-        <div class="row form-group">
-            <label class="col-2 text-left" asp-for="@Model.Book.Genre.Category.Name">Category</label>
-            <input class="col-5 activeSearch" id="inputCategory" type="text" asp-for="@Model.Book.Genre.Category.Name" autocomplete="off" />
-            <select hidden id="listCategory" asp-for="@Model.Book.Genre.Category.Id"
-                    asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre.Category.Id)"></select>
-            <partial name="_CreateButtonGreenPartial" model='"Category"' />
-            <span class="text-danger" asp-validation-for="@Model.Book.Genre.Category.Name"></span>
-        </div>
-        <div class="form-group row">
-            <label class="col-2 text-left" asp-for="@Model.Book.Genre.Name">Genre</label>
-            <input disabled class="col-5 activeSearch" id="inputGenre" type="text" asp-for="@Model.Book.Genre.Name" autocomplete="off" />
-            <select hidden id="listGenres" asp-for="@Model.Book.Genre.Id"
-                    asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre.Id)"></select>
-            <partial name="_CreateButtonGreenPartial" model='"Genre"' />
-            <span class="text-danger" asp-validation-for="@Model.Book.Genre.Name"></span>
-        </div>
         <div class="form-group row">
             <label class="col-2 text-left" asp-for="@Model.Book.Cover.Name">Cover</label>
             <input class="col-5 activeSearch" id="inputCover" type="text" asp-for="@Model.Book.Cover.Name" autocomplete="off" />
@@ -67,6 +83,86 @@
                     asp-items="Model.Covers.ToSelectListItem(Model.Book.Cover.Id)"></select>
             <partial name="_CreateButtonGreenPartial" model='"Cover"' />
             <span class="text-danger" asp-validation-for="@Model.Book.Cover.Name"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre01.Category.Name">Category 1</label>
+            <input class="col-5 activeSearch category" id="inputCategory01" type="text" asp-for="@Model.Book.Genre01.Category.Name" autocomplete="off" />
+            <select hidden id="listCategory01" asp-for="@Model.Book.Genre01.Category.Id"
+                    asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre01.Category.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Category01"' />
+            <span class="text-danger" asp-validation-for="@Model.Book.Genre01.Category.Name"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre01.Name">Genre 1</label>
+            <input disabled class="col-5 activeSearch" id="inputGenre01" type="text" asp-for="@Model.Book.Genre01.Name" autocomplete="off" />
+            <select hidden id="listGenres01" asp-for="@Model.Book.Genre01.Id"
+                    asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Genre01"' />
+            <span class="text-danger" asp-validation-for="@Model.Book.Genre01.Name"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre02.Category.Name">Category 2</label>
+            <input class="col-5 activeSearch category" id="inputCategory02" type="text" asp-for="@Model.Book.Genre01.Category.Name" autocomplete="off" />
+            <select hidden id="listCategory02" asp-for="@Model.Book.Genre01.Category.Id"
+                    asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre01.Category.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Category02"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre02.Name">Genre 2</label>
+            <input disabled class="col-5 activeSearch" id="inputGenre02" type="text" asp-for="@Model.Book.Genre02.Name" autocomplete="off" />
+            <select hidden id="listGenres02" asp-for="@Model.Book.Genre01.Id"
+                    asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Genre02"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre03.Category.Name">Category 3</label>
+            <input class="col-5 activeSearch category" id="inputCategory03" type="text" asp-for="@Model.Book.Genre03.Category.Name" autocomplete="off" />
+            <select hidden id="listCategory03" asp-for="@Model.Book.Genre01.Category.Id"
+                    asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre01.Category.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Category03"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre03.Name">Genre 3</label>
+            <input disabled class="col-5 activeSearch" id="inputGenre03" type="text" asp-for="@Model.Book.Genre03.Name" autocomplete="off" />
+            <select hidden id="listGenres03" asp-for="@Model.Book.Genre01.Id"
+                    asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Genre03"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre04.Category.Name">Category 4</label>
+            <input class="col-5 activeSearch category" id="inputCategory04" type="text" asp-for="@Model.Book.Genre04.Category.Name" autocomplete="off" />
+            <select hidden id="listCategory04" asp-for="@Model.Book.Genre01.Category.Id"
+                    asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre01.Category.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Category04"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre04.Name">Genre 4</label>
+            <input disabled class="col-5 activeSearch" id="inputGenre04" type="text" asp-for="@Model.Book.Genre04.Name" autocomplete="off" />
+            <select hidden id="listGenres04" asp-for="@Model.Book.Genre01.Id"
+                    asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Genre04"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="row form-group">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre05.Category.Name">Category 5</label>
+            <input class="col-5 activeSearch category" id="inputCategory05" type="text" asp-for="@Model.Book.Genre05.Category.Name" autocomplete="off" />
+            <select hidden id="listCategory05" asp-for="@Model.Book.Genre01.Category.Id"
+                    asp-items="Model.Categories.ToSelectListItem(Model.Book.Genre01.Category.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Category05"' />
+            <span class="text-danger"></span>
+        </div>
+        <div class="form-group row">
+            <label class="col-2 text-left" asp-for="@Model.Book.Genre05.Name">Genre 5</label>
+            <input disabled class="col-5 activeSearch" id="inputGenre01" type="text" asp-for="@Model.Book.Genre05.Name" autocomplete="off" />
+            <select hidden id="listGenres05" asp-for="@Model.Book.Genre01.Id"
+                    asp-items="Model.Genres.ToSelectListItem(Model.Book.Genre01.Id)"></select>
+            <partial name="_CreateButtonGreenPartial" model='"Genre05"' />
+            <span class="text-danger"></span>
         </div>
     </div>
 </form>

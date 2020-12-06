@@ -37,9 +37,9 @@ namespace Books.Areas.Admin.Controllers
             BookVM = new BookViewModel
             {
                 Book = new Book() { 
-                    Author = new Author(),
+                    Author01 = new Author(),
                     Cover = new Cover(),
-                    Genre = new Genre { 
+                    Genre01 = new Genre { 
                     Category = new Category()
                     },
                     Publisher = new Publisher(),
@@ -65,10 +65,10 @@ namespace Books.Areas.Admin.Controllers
         {
             // Get all books from database
             // ----------------------
-            var books = _db.Book.Include(b => b.Author).Include(b => b.Cover)
-                                               .Include(b => b.Genre).Include(b => b.Language)
+            var books = _db.Book.Include(b => b.Author01).Include(b => b.Cover)
+                                               .Include(b => b.Genre01).Include(b => b.Language)
                                                .Include(b => b.Publisher)
-                                               .OrderBy(b => b.Author.Alias).ThenBy(b => b.Name)
+                                               .OrderBy(b => b.Author01.Alias).ThenBy(b => b.Name)
                                                .ToListAsync();
 
             // Return books to View
@@ -96,9 +96,9 @@ namespace Books.Areas.Admin.Controllers
         //        await _db.SaveChangesAsync();
         //        return RedirectToAction(nameof(Index));
         //    }
-        //    ViewData["AuthorId"] = new SelectList(_db.Author, "Id", "Name", book.AuthorId);
+        //    ViewData["AuthorId01"] = new SelectList(_db.Author, "Id", "Name", book.AuthorId01);
         //    ViewData["CoverId"] = new SelectList(_db.Cover, "Id", "Name", book.CoverId);
-        //    ViewData["GenreId"] = new SelectList(_db.Genre, "Id", "Name", book.GenreId);
+        //    ViewData["GenreId01"] = new SelectList(_db.Genre01, "Id", "Name", book.GenreId01);
         //    ViewData["LanguageId"] = new SelectList(_db.Language, "Id", "Name", book.LanguageId);
         //    ViewData["PublisherId"] = new SelectList(_db.Publisher, "Id", "Name", book.PublisherId);
         //    return View(book);
@@ -139,9 +139,9 @@ namespace Books.Areas.Admin.Controllers
             }
 
             var book = await _db.Book
-                .Include(b => b.Author)
+                .Include(b => b.Author01)
                 .Include(b => b.Cover)
-                .Include(b => b.Genre)
+                .Include(b => b.Genre01)
                 .Include(b => b.Language)
                 .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -167,9 +167,9 @@ namespace Books.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_db.Author, "Id", "Name", book.AuthorId);
+            ViewData["AuthorId01"] = new SelectList(_db.Author, "Id", "Name", book.AuthorId01);
             ViewData["CoverId"] = new SelectList(_db.Cover, "Id", "Name", book.CoverId);
-            ViewData["GenreId"] = new SelectList(_db.Genre, "Id", "Name", book.GenreId);
+            ViewData["GenreId01"] = new SelectList(_db.Genre, "Id", "Name", book.GenreId01);
             ViewData["LanguageId"] = new SelectList(_db.Language, "Id", "Name", book.LanguageId);
             ViewData["PublisherId"] = new SelectList(_db.Publisher, "Id", "Name", book.PublisherId);
             return View(book);
@@ -180,7 +180,7 @@ namespace Books.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,AuthorId,ReleaseDate,CoverId,GenreId,PublisherId,LanguageId,Image,Description,OnStock,Type,Price")] Book book)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,AuthorId01,ReleaseDate,CoverId,GenreId01,PublisherId,LanguageId,Image,Description,OnStock,Type,Price")] Book book)
         {
             if (id != book.Id)
             {
@@ -207,9 +207,9 @@ namespace Books.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_db.Author, "Id", "Name", book.AuthorId);
+            ViewData["AuthorId01"] = new SelectList(_db.Author, "Id", "Name", book.AuthorId01);
             ViewData["CoverId"] = new SelectList(_db.Cover, "Id", "Name", book.CoverId);
-            ViewData["GenreId"] = new SelectList(_db.Genre, "Id", "Name", book.GenreId);
+            ViewData["GenreId01"] = new SelectList(_db.Genre, "Id", "Name", book.GenreId01);
             ViewData["LanguageId"] = new SelectList(_db.Language, "Id", "Name", book.LanguageId);
             ViewData["PublisherId"] = new SelectList(_db.Publisher, "Id", "Name", book.PublisherId);
             return View(book);
@@ -224,9 +224,9 @@ namespace Books.Areas.Admin.Controllers
             }
 
             var book = await _db.Book
-                .Include(b => b.Author)
+                .Include(b => b.Author01)
                 .Include(b => b.Cover)
-                .Include(b => b.Genre)
+                .Include(b => b.Genre01)
                 .Include(b => b.Language)
                 .Include(b => b.Publisher)
                 .FirstOrDefaultAsync(m => m.Id == id);

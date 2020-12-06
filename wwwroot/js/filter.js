@@ -5,11 +5,11 @@ var selectedInput = null;
 var activeSearch = document.getElementsByClassName("activeSearch");
 $createBtn = $("#createBtn");
 var validationDict = {
-    "Author": false,
+    "Author01": false,
     "Language": false,
     "Publisher": false,
-    "Category": false,
-    "Genre": false,
+    "Category01": false,
+    "Genre01": false,
     "Cover": false
 }
 
@@ -77,8 +77,10 @@ $(".activeSearch").on("dblclick", function (e) {
     fillNode(filteredList, matchedOptions);
 })
 
-$("#inputCategory").on("change", function () {
-    updateGenresList();
+$(".category").on("change", function () {
+    var id = this.id.replace("inputCategory", "");
+    console.log(`id = ${id}`);
+    updateGenresList(id);
     
 })
 
@@ -95,7 +97,10 @@ function validateInput(inputNode) {
             break;
         }
     }
-    validationDict[key] = valid;
+    if (key in validationDict) {
+        validationDict[key] = valid;
+    }
+    
 }
 
 function searchAlgorithm(listNode, inputValue = null, listSize = null) {
@@ -160,8 +165,10 @@ function inputSet(e) {
         validateInput(selectedInput);
         clearNode(filteredList);
         $validationNode = $(selectedInput).next().next().next().text("");
-        if (selectedInput.id == "inputCategory") {
-            updateGenresList();
+        if (selectedInput.classList.contains("category")) {
+            var id = selectedInput.id.replace("inputCategory", "");
+            console.log(`id = ${id}`);
+            updateGenresList(id);
         }
     }
 }
@@ -204,14 +211,14 @@ function sleep(ms) {
     );
 }
 
-function updateGenresList() {
+function updateGenresList(elementId) {
 
     // Currently selected category value get
     // ------------------
-    var $inputGenre = $("#inputGenre");
+    var $inputGenre = $(`#inputGenre${elementId}`);
     $inputGenre.val('');
-    var categorySelected = document.getElementById("inputCategory").value;
-    var list = document.getElementById("listCategory");
+    var categorySelected = document.getElementById(`inputCategory${elementId}`).value;
+    var list = document.getElementById(`listCategory${elementId}`);
     var id = null;
     for (var i = 0; i < list.options.length; i++) {
         if (list.options[i].text == categorySelected) {
@@ -221,7 +228,7 @@ function updateGenresList() {
     }
     // Initialize variables
     // ------------------
-    var $genresList = $("#listGenres");
+    var $genresList = $(`#listGenres${elementId}`);
     $genresList.html('');
 
     // start asynchronous call

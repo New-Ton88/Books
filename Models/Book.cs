@@ -18,11 +18,35 @@ namespace Books.Models
         public string Name { get; set; }
 
         [Required]
-        [Display(Name="Author")]
-        public short AuthorId { get; set; }
+        [Display(Name= "Author01")]
+        public short AuthorId01 { get; set; }
 
-        [ForeignKey("AuthorId")]
-        public virtual Author Author { get; set; }
+        [ForeignKey("AuthorId01")]
+        public virtual Author Author01 { get; set; }
+
+        [Display(Name = "Author02")]
+        public short AuthorId02 { get; set; }
+
+        [ForeignKey("AuthorId02")]
+        public virtual Author Author02 { get; set; }
+
+        [Display(Name = "Author03")]
+        public short AuthorId03 { get; set; }
+
+        [ForeignKey("AuthorId03")]
+        public virtual Author Author03 { get; set; }
+
+        [Display(Name = "Author04")]
+        public short AuthorId04 { get; set; }
+
+        [ForeignKey("AuthorId04")]
+        public virtual Author Author04 { get; set; }
+
+        [Display(Name = "Author05")]
+        public short AuthorId05 { get; set; }
+
+        [ForeignKey("AuthorId05")]
+        public virtual Author Author05 { get; set; }
 
         [Column(TypeName ="Date")]
         public DateTime ReleaseDate { get; set; }
@@ -33,11 +57,36 @@ namespace Books.Models
         [ForeignKey("CoverId")]
         public virtual Cover Cover { get; set; }
 
-        [Display(Name = "Genre")]
-        public short GenreId { get; set; }
+        [Required]
+        [Display(Name = "Genre01")]
+        public short GenreId01 { get; set; }
 
-        [ForeignKey("GenreId")]
-        public virtual Genre Genre { get; set; }
+        [ForeignKey("GenreId01")]
+        public virtual Genre Genre01 { get; set; }
+
+        [Display(Name = "Genre02")]
+        public short GenreId02 { get; set; }
+
+        [ForeignKey("GenreId02")]
+        public virtual Genre Genre02 { get; set; }
+
+        [Display(Name = "Genre03")]
+        public short GenreId03 { get; set; }
+
+        [ForeignKey("GenreId03")]
+        public virtual Genre Genre03 { get; set; }
+
+        [Display(Name = "Genre04")]
+        public short GenreId04 { get; set; }
+
+        [ForeignKey("GenreId04")]
+        public virtual Genre Genre04 { get; set; }
+
+        [Display(Name = "Genre05")]
+        public short GenreId05 { get; set; }
+
+        [ForeignKey("GenreId05")]
+        public virtual Genre Genre05 { get; set; }
 
         [Display(Name = "Publisher")]
         public short PublisherId { get; set; }
@@ -65,7 +114,7 @@ namespace Books.Models
 
         public enum EType { Book = 0, AudioBook = 1 }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Prize should be greater than 1$.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Price should be greater than 1$.")]
         public double Price { get; set; }
 
     }
