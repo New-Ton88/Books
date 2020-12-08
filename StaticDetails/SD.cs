@@ -11,5 +11,10 @@ namespace Books.StaticDetails
         // ------------------------
         public const string AuthorsImgPath = @"\img\Authors\";
         public const string DefaultAuthorImgName = "default.jpg";
+
+        // Book class static details
+        // ------------------------
+        public const string BooksImgPath = @"\img\Books\";
+        public const string DefaultBookImgName = "default.jpg";
     }
 }

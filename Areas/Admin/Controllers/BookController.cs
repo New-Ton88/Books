@@ -38,9 +38,29 @@ namespace Books.Areas.Admin.Controllers
             {
                 Book = new Book() { 
                     Author01 = new Author(),
+                    Author02 = new Author(),
+                    Author03 = new Author(),
+                    Author04 = new Author(),
+                    Author05 = new Author(),
                     Cover = new Cover(),
                     Genre01 = new Genre { 
-                    Category = new Category()
+                        Category = new Category()
+                    },
+                    Genre02 = new Genre
+                    {
+                        Category = new Category()
+                    },
+                    Genre03 = new Genre
+                    {
+                        Category = new Category()
+                    },
+                    Genre04 = new Genre
+                    {
+                        Category = new Category()
+                    },
+                    Genre05 = new Genre
+                    {
+                        Category = new Category()
                     },
                     Publisher = new Publisher(),
                     Language = new Language(),

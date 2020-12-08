@@ -107,6 +107,7 @@ namespace Books.Models
         public string Description { get; set; }
 
         [Required]
+        [Range(0, short.MaxValue, ErrorMessage = "Amount of books on stock can't be less than 0.")]
         public short OnStock { get; set; }
 
         [Required]
@@ -114,7 +115,7 @@ namespace Books.Models
 
         public enum EType { Book = 0, AudioBook = 1 }
 
-        [Range(1, int.MaxValue, ErrorMessage = "Price should be greater than 1$.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price should be greater than 0.01$.")]
         public double Price { get; set; }
 
     }

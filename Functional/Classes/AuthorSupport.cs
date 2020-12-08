@@ -17,33 +17,23 @@ namespace Books.Functional.Classes
     {
         public string WebRootPath { get; set; }
         public ApplicationDbContext Db { get; set; }
+        public IFileSupport FileSupport;
+
+        public AuthorSupport()
+        {
+            FileSupport = new FileSupport();
+        }
 
         private string DefaultImgCreate(AuthorViewModel authorVM)
         {
-            var uploads = Path.Combine(WebRootPath, SD.AuthorsImgPath + SD.DefaultAuthorImgName);
-            var newImgPath = SD.AuthorsImgPath + authorVM.Author.Id + ".jpg";
-            File.Copy(WebRootPath + uploads, WebRootPath + newImgPath);
+            var newImgPath = FileSupport.DefaultImgCreate(SD.AuthorsImgPath, SD.DefaultAuthorImgName, authorVM.Author.Id);
 
             return newImgPath;
         }
 
         public async ValueTask<List<string>> ImgCreateAsync(AuthorViewModel authorVM, IFormFile file)
         {
-            // Files uploaded
-            // ------------------------------
-            var uploads = Path.Combine(WebRootPath + SD.AuthorsImgPath);
-            var extension = Path.GetExtension(file.FileName);
-
-            // Create file for author
-            // ------------------------------
-            using (var fileStream = new FileStream(Path.Combine(uploads, authorVM.Author.Id + extension), FileMode.Create))
-            {
-                // Add file added by user into created file
-                // ------------------------------
-                await file.CopyToAsync(fileStream);
-            }
-
-            var fileDetails = new List<string> { uploads, extension };
+            var fileDetails = await FileSupport.ImgCreateAsync(SD.AuthorsImgPath, authorVM.Author.Id, file);
 
             return fileDetails;
         }
